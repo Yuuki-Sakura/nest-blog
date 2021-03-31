@@ -31,14 +31,16 @@ export class ArticleEntity {
   @CreateDateColumn({
     type: 'datetime',
     comment: '创建时间',
+    name: 'created_at',
   })
-  created: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({
     type: 'datetime',
     comment: '更新时间',
+    name: 'updated_at',
   })
-  updated: Date;
+  updatedAt: Date;
 
   @OneToOne(() => CategoryEntity)
   @JoinColumn()

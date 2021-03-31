@@ -16,13 +16,12 @@ export class LoggingInterceptor implements NestInterceptor {
     context: ExecutionContext,
     next: CallHandler<any>,
   ): Observable<any> {
-    next.handle();
     if (!isDevMode) {
       return next.handle();
     }
     const request = context.switchToHttp().getRequest();
     const content = request.method + ' -> ' + request.url;
-    this.logger.debug('收到请求: ', content);
+    this.logger.log('收到请求: ', content);
     return next
       .handle()
       .pipe(tap(() => this.logger.log('响应请求: ', content)));
