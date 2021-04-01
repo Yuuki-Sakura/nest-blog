@@ -1,7 +1,7 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from '@app/app.module';
 import * as APP_CONFIG from '@app/app.config';
-import { environment, isProdMode } from '@app/app.environment';
+import { environment } from '@app/app.environment';
 import { TransformInterceptor } from '@app/shared/interceptors/transform.interceptor';
 import { HttpExceptionFilter } from '@app/shared/filters/exception.filter';
 import { ErrorInterceptor } from '@app/shared/interceptors/error.interceptor';
@@ -16,7 +16,7 @@ const logger = new AppLogger();
 async function bootstrap() {
   const app = await NestFactory.create(
     AppModule,
-    isProdMode ? { logger: false } : null,
+    // isProdMode ? { logger: false } : null,
   );
   app.use(helmet());
   app.use(compression());
@@ -40,7 +40,7 @@ async function bootstrap() {
 }
 bootstrap().then(() => {
   logger.log(
-    `Nest Blog Run！at http://localhost:${APP_CONFIG.APP.PORT}, env: ${environment}`,
+    `Nest Blog Run！at http://localhost:${APP_CONFIG.APP.PORT} env:${environment}`,
   );
   logger.log(
     `Swagger is running at http://localhost:${APP_CONFIG.APP.PORT}/doc`,

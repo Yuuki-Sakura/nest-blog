@@ -32,7 +32,6 @@ export class OriginMiddleware implements NestMiddleware {
         return response.status(HttpStatus.UNAUTHORIZED).jsonp({
           status: EHttpStatus.Error,
           message: TEXT.HTTP_ANONYMOUS_TEXT,
-          error: null,
         } as THttpErrorResponse);
       }
     }

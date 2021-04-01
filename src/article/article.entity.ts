@@ -1,24 +1,19 @@
 import {
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { Tag } from '@app/tag/tag.entity';
-import { UserEntity } from '@app/user/user.entity';
+import { AccountEntity } from '@app/account/account.entity';
 import { CategoryEntity } from '@app/category/category.entity';
+import { BaseEntity } from '@app/shared/entity/base.entity';
 import { Comment } from '@app/article/comment.entity';
 
 @Entity('article')
-export class ArticleEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class ArticleEntity extends BaseEntity {
   @Column()
   title: string;
 
@@ -28,20 +23,6 @@ export class ArticleEntity {
   @Column({ default: '' })
   body: string;
 
-  @CreateDateColumn({
-    type: 'datetime',
-    comment: '创建时间',
-    name: 'created_at',
-  })
-  createdAt: Date;
-
-  @UpdateDateColumn({
-    type: 'datetime',
-    comment: '更新时间',
-    name: 'updated_at',
-  })
-  updatedAt: Date;
-
   @OneToOne(() => CategoryEntity)
   @JoinColumn()
   category: CategoryEntity;
@@ -50,8 +31,8 @@ export class ArticleEntity {
   @JoinColumn()
   tags: Tag[];
 
-  @ManyToOne(() => UserEntity, (user) => user.articles)
-  author: UserEntity;
+  @ManyToOne(() => AccountEntity, (user) => user.articles)
+  author: AccountEntity;
 
   @OneToMany(() => Comment, (comment) => comment.article)
   @JoinColumn()

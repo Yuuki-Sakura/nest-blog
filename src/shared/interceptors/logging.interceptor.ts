@@ -21,9 +21,9 @@ export class LoggingInterceptor implements NestInterceptor {
     }
     const request = context.switchToHttp().getRequest();
     const content = request.method + ' -> ' + request.url;
-    this.logger.log('收到请求: ', content);
+    this.logger.log('收到请求: ' + content);
     return next
       .handle()
-      .pipe(tap(() => this.logger.log('响应请求: ', content)));
+      .pipe(tap(() => this.logger.log('响应请求: ' + content)));
   }
 }

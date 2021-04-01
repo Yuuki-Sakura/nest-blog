@@ -35,13 +35,12 @@ export interface IHttpResultPaginate<T> {
 // HTTP 状态返回
 export interface IHttpResponseBase {
   code: HttpStatus;
-  status: EHttpStatus;
+  status: string;
   message: TMessage;
 }
 
 // HTTP error
 export type THttpErrorResponse = IHttpResponseBase & {
-  error: any;
   debug?: string;
 };
 
