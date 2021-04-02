@@ -7,7 +7,7 @@
 import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common';
-import { ValidationError } from '@app/shared/errors/validation.error';
+import { ValidationException } from '@app/shared/exception/validation.exception';
 
 /**
  * @class ValidationPipe
@@ -25,7 +25,7 @@ export class ValidationPipe implements PipeTransform<any> {
       const errorMessage = errors
         .map((error) => Object.values(error.constraints).join(';'))
         .join(';');
-      throw new ValidationError(errorMessage);
+      throw new ValidationException(errorMessage);
     }
     return value;
   }

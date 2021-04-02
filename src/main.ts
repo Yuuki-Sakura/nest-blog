@@ -4,7 +4,7 @@ import * as APP_CONFIG from '@app/app.config';
 import { environment } from '@app/app.environment';
 import { TransformInterceptor } from '@app/shared/interceptors/transform.interceptor';
 import { HttpExceptionFilter } from '@app/shared/filters/exception.filter';
-import { ErrorInterceptor } from '@app/shared/interceptors/error.interceptor';
+import { ExceptionInterceptor } from '@app/shared/interceptors/exception.interceptor';
 import { LoggingInterceptor } from '@app/shared/interceptors/logging.interceptor';
 import helmet from 'helmet';
 import compression from 'compression';
@@ -16,7 +16,7 @@ const logger = new AppLogger();
 async function bootstrap() {
   const app = await NestFactory.create(
     AppModule,
-    // isProdMode ? { logger: false } : null,
+    // isProdMode ? { logger: false } : undefined,
   );
   app.use(helmet());
   app.use(compression());
@@ -24,7 +24,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(
     new TransformInterceptor(new Reflector()),
-    new ErrorInterceptor(new Reflector()),
+    new ExceptionInterceptor(new Reflector()),
     new LoggingInterceptor(logger),
   );
 

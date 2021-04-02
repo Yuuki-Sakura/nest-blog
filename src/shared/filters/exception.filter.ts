@@ -31,7 +31,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       code: resultStatus,
       status: EHttpStatus.Error,
       message: resultError,
-      debug: isDevMode ? stack || exception.stack : null,
+      stack: isDevMode ? stack || exception.stack : null,
     };
     // 对默认的 404 进行特殊处理
     if (status === HttpStatus.NOT_FOUND) {

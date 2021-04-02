@@ -15,16 +15,16 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { TMessage } from '@app/shared/interfaces/http.interface';
-import { CustomError } from '@app/shared/errors/custom.error';
+import { CustomException } from '@app/shared/exception/custom.exception';
 import * as META from '@app/shared/constants/meta.constant';
 import * as TEXT from '@app/shared/constants/text.constant';
 
 /**
- * @class ErrorInterceptor
+ * @class ExceptionInterceptor
  * @classdesc 当控制器所需的 Promise service 发生错误时，错误将在此被捕获
  */
 @Injectable()
-export class ErrorInterceptor implements NestInterceptor {
+export class ExceptionInterceptor implements NestInterceptor {
   constructor(private readonly reflector: Reflector) {}
 
   intercept(
@@ -43,7 +43,7 @@ export class ErrorInterceptor implements NestInterceptor {
       .handle()
       .pipe(
         catchError((error) =>
-          throwError(new CustomError({ message, error }, statusCode)),
+          throwError(new CustomException({ message, error }, statusCode)),
         ),
       );
   }

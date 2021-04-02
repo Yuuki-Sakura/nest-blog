@@ -8,12 +8,11 @@ import * as TEXT from '@app/shared/constants/text.constant';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 /**
- * @class HttpBadRequestError
+ * @class HttpBadRequestHttpException
  * @classdesc 400 -> 请求不合法
- * @example new HttpBadRequestError('错误信息')
- * @example new HttpBadRequestError(new Error())
+ * @example new HttpBadRequestHttpException('错误信息')
  */
-export class HttpBadRequestError extends HttpException {
+export class HttpBadRequestException extends HttpException {
   constructor(error?: any) {
     super(error || TEXT.HTTP_BAD_REQUEST_TEXT_DEFAULT, HttpStatus.BAD_REQUEST);
   }

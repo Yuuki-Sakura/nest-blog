@@ -9,7 +9,7 @@ export class AccountEntity extends BaseEntity {
   username: string;
 
   @IsEmail()
-  @Column({ length: 500, default: null })
+  @Column({ length: 50 })
   email: string; // 邮箱
 
   @Column({ length: 500 })

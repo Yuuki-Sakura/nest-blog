@@ -9,12 +9,11 @@ import { UnauthorizedException } from '@nestjs/common';
 import { TMessage } from '@app/shared//interfaces/http.interface';
 
 /**
- * @class HttpUnauthorizedError
+ * @class HttpUnauthorizedException
  * @classdesc 401 -> 未授权/权限验证失败
- * @example new HttpUnauthorizedError('全新验证失败')
- * @example new HttpUnauthorizedError('错误信息', new Error())
+ * @example new HttpUnauthorizedError('错误信息')
  */
-export class HttpUnauthorizedError extends UnauthorizedException {
+export class HttpUnauthorizedException extends UnauthorizedException {
   constructor(message?: TMessage, error?: any) {
     super(message || TEXT.HTTP_UNAUTHORIZED_TEXT_DEFAULT, error);
   }

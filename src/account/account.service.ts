@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { AccountRepository } from '@app/account/account.repository';
 import { AccountLoginDto } from '@app/account/dto/account-login.dto';
+import { AccountRegisterDto } from '@app/account/dto/account-register.dto';
 
 @Injectable()
 export class AccountService {
@@ -22,5 +23,8 @@ export class AccountService {
 
   login(account: AccountLoginDto) {
     return this.userRepository.login(account);
+  }
+  register(account: AccountRegisterDto) {
+    return this.userRepository.register(account);
   }
 }

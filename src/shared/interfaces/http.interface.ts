@@ -41,7 +41,7 @@ export interface IHttpResponseBase {
 
 // HTTP error
 export type THttpErrorResponse = IHttpResponseBase & {
-  debug?: string;
+  stack?: string;
 };
 
 // HTTP success 返回
