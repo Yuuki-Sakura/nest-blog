@@ -17,7 +17,6 @@ import {
 import {
   EHttpStatus,
   THttpSuccessResponse,
-  TMessage,
 } from '@app/shared/interfaces/http.interface';
 import * as META from '@app/shared/constants/meta.constant';
 import * as TEXT from '@app/shared/constants/text.constant';
@@ -37,7 +36,7 @@ export class TransformInterceptor<T>
   ): Observable<THttpSuccessResponse<T>> {
     const target = context.getHandler();
     const message =
-      this.reflector.get<TMessage>(META.HTTP_SUCCESS_MESSAGE, target) ||
+      this.reflector.get<string>(META.HTTP_SUCCESS_MESSAGE, target) ||
       TEXT.HTTP_DEFAULT_SUCCESS_TEXT;
     const statusCode = this.reflector.get<HttpStatus>(
       META.HTTP_ERROR_CODE,
@@ -45,12 +44,11 @@ export class TransformInterceptor<T>
     );
     return next.handle().pipe(
       map((data: any) => {
-        const result = data;
         return {
           code: statusCode || context.switchToHttp().getResponse().statusCode,
           status: EHttpStatus.Success,
           message,
-          result,
+          data,
         };
       }),
     );

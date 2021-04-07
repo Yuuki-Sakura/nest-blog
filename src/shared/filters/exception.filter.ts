@@ -3,7 +3,6 @@ import {
   EHttpStatus,
   THttpErrorResponse,
   TExceptionOption,
-  TMessage,
 } from '@app/shared/interfaces/http.interface';
 import {
   ExceptionFilter,
@@ -23,15 +22,14 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus
       ? exception.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR
       : HttpStatus.INTERNAL_SERVER_ERROR;
-    const errorOption: TExceptionOption = exception.getResponse() as TExceptionOption;
-    const isString = (value): value is TMessage => typeof value === 'string';
-    const errorInfo = isString(errorOption) ? null : errorOption.error;
-    const parentErrorInfo = errorInfo ? String(errorInfo) : null;
+    const errorOption: TExceptionOption = exception.getResponse
+      ? (exception.getResponse() as TExceptionOption)
+      : null;
+    const errorInfo = errorOption?.error;
     const isChildrenError = errorInfo?.status && errorInfo?.message;
-    const resultError =
-      (isChildrenError && errorInfo.message) || parentErrorInfo;
+    const resultError = (isChildrenError && errorInfo?.message) || errorInfo;
     const resultStatus = isChildrenError ? errorInfo.status : status;
-    const stack = exception.getResponse()['error']?.stack || exception.stack;
+    const stack = errorOption?.error?.stack || exception.stack;
     const data: THttpErrorResponse = {
       code: resultStatus,
       status: EHttpStatus.Error,

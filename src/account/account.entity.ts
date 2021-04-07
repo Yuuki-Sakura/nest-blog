@@ -31,7 +31,7 @@ export class AccountEntity extends BaseEntity {
   })
   status: string;
 
-  @Column('date', { comment: '登陆时间', nullable: true })
+  @Column('timestamp', { comment: '登陆时间', nullable: true })
   loginDate: Date;
 
   @OneToMany(() => ArticleEntity, (article) => article.author)

@@ -14,7 +14,6 @@ import {
   ExecutionContext,
   HttpStatus,
 } from '@nestjs/common';
-import { TMessage } from '@app/shared/interfaces/http.interface';
 import { CustomException } from '@app/shared/exception/custom.exception';
 import * as META from '@app/shared/constants/meta.constant';
 import * as TEXT from '@app/shared/constants/text.constant';
@@ -37,7 +36,7 @@ export class ExceptionInterceptor implements NestInterceptor {
       target,
     );
     const message =
-      this.reflector.get<TMessage>(META.HTTP_ERROR_MESSAGE, target) ||
+      this.reflector.get<string>(META.HTTP_ERROR_MESSAGE, target) ||
       TEXT.HTTP_DEFAULT_ERROR_TEXT;
     return next
       .handle()

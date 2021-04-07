@@ -11,14 +11,14 @@ export class BaseEntity {
   id: string;
 
   @CreateDateColumn({
-    type: 'datetime',
+    type: 'timestamp',
     comment: '创建时间',
     name: 'create_date',
   })
   createDate: Date;
 
   @UpdateDateColumn({
-    type: 'datetime',
+    type: 'timestamp',
     comment: '更新时间',
     name: 'update_date',
   })

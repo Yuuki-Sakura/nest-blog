@@ -6,5 +6,11 @@ export class AccountUpdateDto {
   @ApiProperty()
   readonly email?: string;
   @ApiProperty()
+  readonly phone?: string;
+  @ApiProperty()
   readonly avatar?: string;
+  @ApiProperty()
+  readonly articleIds?: string[];
+  @ApiProperty()
+  readonly roleIds?: string[];
 }

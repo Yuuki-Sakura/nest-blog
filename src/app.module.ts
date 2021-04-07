@@ -1,5 +1,4 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-
 //中间件
 import { OriginMiddleware } from '@app/shared/middlewares/origin.middleware';
 import { CorsMiddleware } from '@app/shared/middlewares/cors.middleware';
@@ -11,8 +10,8 @@ import { AppController } from '@app/app.controller';
 import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './role/role.module';
 import { ConfigModule } from '@nestjs/config';
-import { cacheModule } from '@app/app.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CacheModule } from './shared/cache/cache.module';
 
 // 业务模块
 @Module({
@@ -29,7 +28,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true,
       logging: true,
     }),
-    cacheModule,
+    CacheModule,
     AccountModule,
     ArticleModule,
     TagModule,

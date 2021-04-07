@@ -12,13 +12,10 @@ export enum EHttpStatus {
   Success = 'success',
 }
 
-export type TMessage = string;
-export type TExceptionOption =
-  | TMessage
-  | {
-      message: TMessage;
-      error?: any;
-    };
+export type TExceptionOption = {
+  message: string;
+  error?: any;
+};
 
 // 翻页数据
 export interface IHttpResultPaginate<T> {
@@ -36,7 +33,7 @@ export interface IHttpResultPaginate<T> {
 export interface IHttpResponseBase {
   code: HttpStatus;
   status: string;
-  message: TMessage;
+  message: string;
 }
 
 // HTTP error
@@ -46,7 +43,7 @@ export type THttpErrorResponse = IHttpResponseBase & {
 
 // HTTP success 返回
 export type THttpSuccessResponse<T> = IHttpResponseBase & {
-  result: T | IHttpResultPaginate<T>;
+  data: T | IHttpResultPaginate<T>;
 };
 
 // HTTP Response

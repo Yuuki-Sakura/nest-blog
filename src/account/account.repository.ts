@@ -16,6 +16,7 @@ export class AccountRepository extends Repository<AccountEntity> {
     return await this.createQueryBuilder('account')
       .where('account.username = :username', { username })
       .orWhere('account.email = :username', { username })
+      .leftJoinAndSelect('account.roles', 'role')
       .getOne();
   }
   async login(account: AccountLoginDto) {
