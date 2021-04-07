@@ -13,14 +13,14 @@ export class BaseEntity {
   @CreateDateColumn({
     type: 'datetime',
     comment: '创建时间',
-    name: 'created_at',
+    name: 'create_date',
   })
-  createdAt: Date;
+  createDate: Date;
 
   @UpdateDateColumn({
     type: 'datetime',
     comment: '更新时间',
-    name: 'updated_at',
+    name: 'update_date',
   })
-  updatedAt: Date;
+  updateDate: Date;
 }

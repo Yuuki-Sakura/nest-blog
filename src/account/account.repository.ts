@@ -12,13 +12,14 @@ import { HttpBadRequestException } from '@app/shared/exception/bad-request.excep
 @Injectable()
 @EntityRepository(AccountEntity)
 export class AccountRepository extends Repository<AccountEntity> {
-  async login(account: AccountLoginDto) {
-    const user = await this.createQueryBuilder('user')
-      .where('user.username = :username', {
-        username: account.username,
-      })
-      .orWhere('user.email = :email', { email: account.username })
+  async findOneByUsernameOrEmail(username: string) {
+    return await this.createQueryBuilder('account')
+      .where('account.username = :username', { username })
+      .orWhere('account.email = :username', { username })
       .getOne();
+  }
+  async login(account: AccountLoginDto) {
+    const user = this.findOneByUsernameOrEmail(account.username);
     if (!user) {
       throw new NotFoundException(
         'Could not find account by username or email: ' + account.username,
@@ -29,7 +30,7 @@ export class AccountRepository extends Repository<AccountEntity> {
   async register(account: AccountRegisterDto) {
     if (await this.findOne({ username: account.username })) {
       throw new BadRequestException(
-        `Username: '${account.username}' could not be used`,
+        `Username: '${account.username}' could not be use`,
       );
     }
     const result = await this.save(

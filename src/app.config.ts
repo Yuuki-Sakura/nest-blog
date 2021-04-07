@@ -6,26 +6,13 @@
 
 import path from 'path';
 import { argv } from 'yargs';
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-const APP_ROOT_PATH = __dirname;
-const PROJECT_ROOT_PATH = path.join(APP_ROOT_PATH, '..');
-const FE_PATH = path.join(PROJECT_ROOT_PATH, '..', 'zy.ci');
-const FE_PUBLIC_PATH = path.join(FE_PATH, 'public');
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { CacheModule } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+const PROJECT_ROOT_PATH = path.join(__dirname, '..');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const packageJSON = require(path.resolve(PROJECT_ROOT_PATH, 'package.json'));
-
-export const APP = {
-  LIMIT: 16,
-  PORT: 8000,
-  MASTER: '结城桜',
-  NAME: 'Nest Blog',
-  URL: 'https://zy.ci',
-  FRONT_END_PATH: FE_PATH,
-  FRONT_END_PUBLIC_PATH: FE_PUBLIC_PATH,
-  ROOT_PATH: APP_ROOT_PATH,
-  PROJECT_ROOT_PATH,
-};
-
+// console.log(process.env);
 export const PROJECT = {
   name: packageJSON.name,
   version: packageJSON.version,
@@ -40,17 +27,24 @@ export const CROSS_DOMAIN = {
   allowedReferer: 'zy.ci',
 };
 
-export const TYPEORM: TypeOrmModuleOptions = {
+export const ORMModule = TypeOrmModule.forRoot({
   type: 'mysql',
-  host: 'localhost',
-  port: (argv.dbport as number) || 3306,
-  username: (argv.db_username as string) || 'root',
-  password: (argv.db_password as string) || 'lys.0828',
-  database: 'nest_blog',
+  host: process.env.DB_HOST,
+  port: +process.env.DB_PORT,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
   synchronize: true,
   autoLoadEntities: true,
   logging: true,
-};
+});
+
+export const cacheModule = CacheModule.register();
+
+export const jwtModule = JwtModule.register({
+  secret: process.env.JWT_SECRET,
+  signOptions: { expiresIn: process.env.JWT_EXPIRES },
+});
 
 export const AUTH = {
   expiresIn: argv.auth_expires_in || 3600,

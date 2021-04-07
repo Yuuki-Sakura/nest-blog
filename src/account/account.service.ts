@@ -11,12 +11,10 @@ export class AccountService {
     return this.userRepository.find();
   }
 
-  async findOneByName(name: string) {
-    const user = await this.userRepository.findOne({ username: name });
+  async findOneByUsernameOrEmail(username: string) {
+    const user = await this.userRepository.findOneByUsernameOrEmail(username);
     if (!user) {
-      throw new NotFoundException(
-        'Could not find account by username: ' + name,
-      );
+      throw new NotFoundException('用户名或邮箱无效');
     }
     return user;
   }
