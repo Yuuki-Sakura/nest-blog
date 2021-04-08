@@ -8,14 +8,14 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { AccountService } from '@app/account/account.service';
-import { AccountLoginDto } from '@app/account/dto/account-login.dto';
+import { AccountService } from '@account/account.service';
+import { AccountLoginDto } from '@account/dto/account-login.dto';
 import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AccountEntity } from '@app/account/account.entity';
-import { AccountRegisterDto } from '@app/account/dto/account-register.dto';
-import { AuthService } from '@app/auth/auth.service';
-import { Auth } from '@app/auth/auth.guard';
-import { AccountUpdateDto } from '@app/account/dto/account-update.dto';
+import { AccountEntity } from '@account/account.entity';
+import { AccountRegisterDto } from '@account/dto/account-register.dto';
+import { AuthService } from '@auth/auth.service';
+import { Auth } from '@auth/auth.guard';
+import { AccountUpdateDto } from '@account/dto/account-update.dto';
 
 @ApiTags('account')
 @Controller('/account')

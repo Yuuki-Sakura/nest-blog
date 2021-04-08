@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { AccountRepository } from '@app/account/account.repository';
-import { AccountRegisterDto } from '@app/account/dto/account-register.dto';
-import { AccountUpdateDto } from '@app/account/dto/account-update.dto';
-import { RoleService } from '@app/role/role.service';
-import { AccountEntity } from '@app/account/account.entity';
+import { AccountRepository } from '@account/account.repository';
+import { AccountRegisterDto } from '@account/dto/account-register.dto';
+import { AccountUpdateDto } from '@account/dto/account-update.dto';
+import { RoleService } from '@role/role.service';
+import { AccountEntity } from '@account/account.entity';
 
 @Injectable()
 export class AccountService {

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AccountController } from './account.controller';
 import { AccountService } from './account.service';
-import { AccountRepository } from '@app/account/account.repository';
+import { AccountRepository } from '@account/account.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from '@app/auth/auth.module';
-import { RoleModule } from '@app/role/role.module';
+import { AuthModule } from '@auth/auth.module';
+import { RoleModule } from '@role/role.module';
 
 @Module({
   imports: [

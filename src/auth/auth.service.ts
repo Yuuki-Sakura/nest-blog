@@ -5,8 +5,8 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AccountService } from '@app/account/account.service';
-import { AccountEntity } from '@app/account/account.entity';
+import { AccountService } from '@account/account.service';
+import { AccountEntity } from '@account/account.entity';
 import { Cache } from 'cache-manager';
 
 @Injectable()

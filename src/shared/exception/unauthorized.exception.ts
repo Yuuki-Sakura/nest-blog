@@ -4,7 +4,7 @@
  * @module error/unauthorized
  */
 
-import * as TEXT from '@app/shared//constants/text.constant';
+import * as TEXT from '@shared/constants/text.constant';
 import { UnauthorizedException } from '@nestjs/common';
 
 /**

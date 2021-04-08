@@ -5,7 +5,7 @@
  */
 
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { TExceptionOption } from '@app/shared//interfaces/http.interface';
+import { TExceptionOption } from '@shared/interfaces/http.interface';
 
 /**
  * @class CustomException

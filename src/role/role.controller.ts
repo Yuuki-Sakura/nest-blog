@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
-import { RoleService } from '@app/role/role.service';
-import { UpdateRoleDto } from '@app/role/dto/CreateRoleDto';
-import { Role } from '@app/role/role.entity';
+import { RoleService } from '@role/role.service';
+import { UpdateRoleDto } from '@role/dto/CreateRoleDto';
+import { Role } from '@role/role.entity';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('角色')

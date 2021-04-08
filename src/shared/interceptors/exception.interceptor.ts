@@ -14,9 +14,9 @@ import {
   ExecutionContext,
   HttpStatus,
 } from '@nestjs/common';
-import { CustomException } from '@app/shared/exception/custom.exception';
-import * as META from '@app/shared/constants/meta.constant';
-import * as TEXT from '@app/shared/constants/text.constant';
+import { CustomException } from '@shared/exception/custom.exception';
+import * as META from '@shared/constants/meta.constant';
+import * as TEXT from '@shared/constants/text.constant';
 
 /**
  * @class ExceptionInterceptor

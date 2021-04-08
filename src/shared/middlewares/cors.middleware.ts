@@ -11,8 +11,8 @@ import {
   HttpStatus,
   RequestMethod,
 } from '@nestjs/common';
-import { isDevMode } from '@app/app.environment';
-import * as APP_CONFIG from '@app/app.config';
+import { isDevMode } from '@app.environment';
+import * as APP_CONFIG from '@app.config';
 
 /**
  * @class CorsMiddleware

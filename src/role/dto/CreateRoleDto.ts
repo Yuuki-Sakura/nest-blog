@@ -1,4 +1,4 @@
-import { TPermissions } from '@app/role/role.entity';
+import { TPermissions } from '@role/role.entity';
 
 export class UpdateRoleDto {
   name?: string;

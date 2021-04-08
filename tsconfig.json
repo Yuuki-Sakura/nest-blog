@@ -16,8 +16,7 @@
     "baseUrl": "./src",
     "incremental": true,
     "paths": {
-      "@app": ["./"],
-      "@app/*": ["./*"]
+      "@*": ["./*"],
     }
   },
   "typeAcquisition": {

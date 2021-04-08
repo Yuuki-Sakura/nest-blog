@@ -1,9 +1,9 @@
-import { isDevMode } from '@app/app.environment';
+import { isDevMode } from '@app.environment';
 import {
   EHttpStatus,
   THttpErrorResponse,
   TExceptionOption,
-} from '@app/shared/interfaces/http.interface';
+} from '@shared/interfaces/http.interface';
 import {
   ExceptionFilter,
   Catch,
@@ -11,8 +11,8 @@ import {
   ArgumentsHost,
   HttpStatus,
 } from '@nestjs/common';
-import { AppLogger } from '@app/shared/logger/app.logger';
-import { HTTP_UNAUTHORIZED_TEXT_DEFAULT } from '@app/shared/constants/text.constant';
+import { AppLogger } from '@shared/logger/app.logger';
+import { HTTP_UNAUTHORIZED_TEXT_DEFAULT } from '@shared/constants/text.constant';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {

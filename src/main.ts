@@ -1,13 +1,13 @@
 import { NestFactory, Reflector } from '@nestjs/core';
-import { AppModule } from '@app/app.module';
-import { environment } from '@app/app.environment';
-import { TransformInterceptor } from '@app/shared/interceptors/transform.interceptor';
-import { HttpExceptionFilter } from '@app/shared/filters/exception.filter';
-import { ExceptionInterceptor } from '@app/shared/interceptors/exception.interceptor';
-import { LoggingInterceptor } from '@app/shared/interceptors/logging.interceptor';
+import { AppModule } from '@app.module';
+import { environment } from '@app.environment';
+import { TransformInterceptor } from '@shared/interceptors/transform.interceptor';
+import { HttpExceptionFilter } from '@shared/filters/exception.filter';
+import { ExceptionInterceptor } from '@shared/interceptors/exception.interceptor';
+import { LoggingInterceptor } from '@shared/interceptors/logging.interceptor';
 import helmet from 'helmet';
 import compression from 'compression';
-import { AppLogger } from '@app/shared/logger/app.logger';
+import { AppLogger } from '@shared/logger/app.logger';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 const logger = new AppLogger();

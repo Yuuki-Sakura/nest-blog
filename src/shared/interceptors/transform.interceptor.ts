@@ -17,9 +17,9 @@ import {
 import {
   EHttpStatus,
   THttpSuccessResponse,
-} from '@app/shared/interfaces/http.interface';
-import * as META from '@app/shared/constants/meta.constant';
-import * as TEXT from '@app/shared/constants/text.constant';
+} from '@shared/interfaces/http.interface';
+import * as META from '@shared/constants/meta.constant';
+import * as TEXT from '@shared/constants/text.constant';
 
 /**
  * @class TransformInterceptor

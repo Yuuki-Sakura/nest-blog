@@ -3,11 +3,11 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Connection, EntityRepository, Repository } from 'typeorm';
-import { AccountEntity } from '@app/account/account.entity';
-import { AccountLoginDto } from '@app/account/dto/account-login.dto';
-import { AccountRegisterDto } from '@app/account/dto/account-register.dto';
-import { HttpBadRequestException } from '@app/shared/exception/bad-request.exception';
+import { EntityRepository, Repository } from 'typeorm';
+import { AccountEntity } from '@account/account.entity';
+import { AccountLoginDto } from '@account/dto/account-login.dto';
+import { AccountRegisterDto } from '@account/dto/account-register.dto';
+import { HttpBadRequestException } from '@shared/exception/bad-request.exception';
 
 @Injectable()
 @EntityRepository(AccountEntity)
@@ -44,9 +44,3 @@ export class AccountRepository extends Repository<AccountEntity> {
     }
   }
 }
-export const UserRepositoryProvider = {
-  provide: 'AccountRepository',
-  useFactory: (connection: Connection) =>
-    connection.getCustomRepository(AccountRepository),
-  inject: [Connection],
-};

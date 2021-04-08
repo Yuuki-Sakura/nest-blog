@@ -1,5 +1,5 @@
 import { Column, Entity } from 'typeorm';
-import { BaseEntity } from '@app/shared/entity/base.entity';
+import { BaseEntity } from '@shared/entity/base.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 type TPermission = {

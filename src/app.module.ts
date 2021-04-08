@@ -1,17 +1,17 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 //中间件
-import { OriginMiddleware } from '@app/shared/middlewares/origin.middleware';
-import { CorsMiddleware } from '@app/shared/middlewares/cors.middleware';
-import { AccountModule } from './account/account.module';
-import { ArticleModule } from './article/article.module';
-import { TagModule } from './tag/tag.module';
-import { CategoryModule } from './category/category.module';
-import { AppController } from '@app/app.controller';
-import { AuthModule } from './auth/auth.module';
-import { RoleModule } from './role/role.module';
+import { OriginMiddleware } from '@shared/middlewares/origin.middleware';
+import { CorsMiddleware } from '@shared/middlewares/cors.middleware';
+import { AccountModule } from '@account/account.module';
+import { ArticleModule } from '@article/article.module';
+import { TagModule } from '@tag/tag.module';
+import { CategoryModule } from '@category/category.module';
+import { AppController } from '@app.controller';
+import { AuthModule } from '@auth/auth.module';
+import { RoleModule } from '@role/role.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CacheModule } from './shared/cache/cache.module';
+import { CacheModule } from '@shared/cache/cache.module';
 
 // 业务模块
 @Module({

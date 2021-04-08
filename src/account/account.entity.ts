@@ -1,8 +1,8 @@
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
-import { ArticleEntity } from '@app/article/article.entity';
+import { ArticleEntity } from '@article/article.entity';
 import { IsEmail } from 'class-validator';
-import { BaseEntity } from '@app/shared/entity/base.entity';
-import { Role } from '@app/role/role.entity';
+import { BaseEntity } from '@shared/entity/base.entity';
+import { Role } from '@role/role.entity';
 import { Exclude } from 'class-transformer';
 
 @Entity('account')

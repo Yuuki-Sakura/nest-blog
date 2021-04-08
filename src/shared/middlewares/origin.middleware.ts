@@ -9,10 +9,10 @@ import { Injectable, NestMiddleware, HttpStatus } from '@nestjs/common';
 import {
   THttpErrorResponse,
   EHttpStatus,
-} from '@app/shared/interfaces/http.interface';
-import { isProdMode } from '@app/app.environment';
-import { CROSS_DOMAIN } from '@app/app.config';
-import * as TEXT from '@app/shared/constants/text.constant';
+} from '@shared/interfaces/http.interface';
+import { isProdMode } from '@app.environment';
+import { CROSS_DOMAIN } from '@app.config';
+import * as TEXT from '@shared/constants/text.constant';
 
 /**
  * @class OriginMiddleware

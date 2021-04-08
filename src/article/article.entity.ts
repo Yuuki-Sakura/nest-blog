@@ -6,11 +6,11 @@ import {
   OneToMany,
   OneToOne,
 } from 'typeorm';
-import { Tag } from '@app/tag/tag.entity';
-import { AccountEntity } from '@app/account/account.entity';
-import { CategoryEntity } from '@app/category/category.entity';
-import { BaseEntity } from '@app/shared/entity/base.entity';
-import { Comment } from '@app/article/comment.entity';
+import { Tag } from '@tag/tag.entity';
+import { AccountEntity } from '@account/account.entity';
+import { CategoryEntity } from '@category/category.entity';
+import { BaseEntity } from '@shared/entity/base.entity';
+import { Comment } from '@article/comment.entity';
 
 @Entity('article')
 export class ArticleEntity extends BaseEntity {

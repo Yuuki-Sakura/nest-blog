@@ -4,7 +4,7 @@
  * @module error/bad-request
  */
 
-import * as TEXT from '@app/shared/constants/text.constant';
+import * as TEXT from '@shared/constants/text.constant';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 /**

@@ -1,8 +1,8 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { JwtStrategy } from '@app/auth/jwt.strategy';
+import { JwtStrategy } from '@auth/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
-import { AccountModule } from '@app/account/account.module';
+import { AccountModule } from '@account/account.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 
