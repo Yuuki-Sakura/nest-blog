@@ -12,6 +12,10 @@ import { RoleModule } from '@role/role.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CacheModule } from '@shared/cache/cache.module';
+import { PermissionModule } from '@permission/permission.module';
+
+//配置文件
+import { DATABASE } from '@app.config';
 
 // 业务模块
 @Module({
@@ -19,11 +23,11 @@ import { CacheModule } from '@shared/cache/cache.module';
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.DB_HOST,
-      port: +process.env.DB_PORT,
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE,
+      host: DATABASE.HOST,
+      port: DATABASE.PORT,
+      username: DATABASE.USERNAME,
+      password: DATABASE.PASSWORD,
+      database: DATABASE.DATABASE,
       synchronize: true,
       autoLoadEntities: true,
       logging: true,
@@ -35,6 +39,7 @@ import { CacheModule } from '@shared/cache/cache.module';
     CategoryModule,
     AuthModule,
     RoleModule,
+    PermissionModule,
   ],
   controllers: [AppController],
 })

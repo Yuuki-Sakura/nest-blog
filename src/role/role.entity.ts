@@ -1,14 +1,7 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 import { BaseEntity } from '@shared/entity/base.entity';
 import { ApiProperty } from '@nestjs/swagger';
-
-type TPermission = {
-  query?: boolean;
-  create?: boolean;
-  update?: boolean;
-  delete?: boolean;
-};
-export type TPermissions = { [key: string]: { [key: string]: TPermission } };
+import { Permission } from '@permission/permission.entity';
 
 @Entity('role')
 export class Role extends BaseEntity {
@@ -17,6 +10,7 @@ export class Role extends BaseEntity {
   name: string;
 
   @ApiProperty()
-  @Column('json', { comment: '权限列表' })
-  permissions: TPermissions;
+  @ManyToMany(() => Permission)
+  @JoinTable()
+  permissions: Permission[];
 }

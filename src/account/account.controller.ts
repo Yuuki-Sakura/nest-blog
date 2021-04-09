@@ -10,11 +10,11 @@ import {
 } from '@nestjs/common';
 import { AccountService } from '@account/account.service';
 import { AccountLoginDto } from '@account/dto/account-login.dto';
-import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AccountEntity } from '@account/account.entity';
 import { AccountRegisterDto } from '@account/dto/account-register.dto';
 import { AuthService } from '@auth/auth.service';
-import { Auth } from '@auth/auth.guard';
+import { Account, Auth } from '@auth/auth.guard';
 import { AccountUpdateDto } from '@account/dto/account-update.dto';
 
 @ApiTags('account')
@@ -25,9 +25,15 @@ export class AccountController {
     private readonly authService: AuthService,
   ) {}
 
-  @Get()
+  @Get('all')
   findAll() {
     return this.accountService.findAll();
+  }
+
+  @Get()
+  @Auth()
+  getDetail(@Account() account) {
+    return this.accountService.findById(account.id);
   }
 
   @Get(':username')
@@ -37,11 +43,18 @@ export class AccountController {
 
   @ApiResponse({ type: AccountEntity })
   @ApiBody({ type: AccountLoginDto })
+  @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(@Body() account: AccountLoginDto) {
     const { username, password } = account;
-    const authResult = await this.authService.validateUser(username, password);
-    return { token: await this.authService.certificate(authResult) };
+    const authResult = await this.authService.validateUser(username, password),
+      token = await this.authService.certificate(authResult);
+    delete authResult.password;
+    delete authResult.roles;
+    return {
+      ...authResult,
+      token,
+    };
   }
 
   @ApiBody({ type: AccountRegisterDto })
@@ -51,14 +64,14 @@ export class AccountController {
     return this.accountService.register(account);
   }
 
-  @Auth('account.test.query')
-  @ApiBearerAuth()
   @Post('test')
+  @Auth('account.test', '测试')
   async test() {
     return 'success';
   }
 
   @Put(':id')
+  @Auth('account.update', '更新账户信息')
   async update(@Param('id') id: string, @Body() account: AccountUpdateDto) {
     return this.accountService.update(id, account);
   }

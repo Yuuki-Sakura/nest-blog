@@ -17,8 +17,8 @@ export class AccountEntity extends BaseEntity {
   @Column({ comment: '手机号', nullable: true, unique: true })
   phone: string;
 
-  @Exclude()
   @Column({ length: 256, comment: '密码' })
+  @Exclude()
   password: string;
 
   @Column({ length: 500, nullable: true, default: null, comment: '头像' })

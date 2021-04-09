@@ -25,6 +25,7 @@ async function bootstrap() {
     new TransformInterceptor(new Reflector()),
     new ExceptionInterceptor(new Reflector()),
     new LoggingInterceptor(logger),
+    // new ClassSerializerInterceptor(new Reflector()),
   );
   app.setGlobalPrefix(process.env.SERVER_PREFIX);
 

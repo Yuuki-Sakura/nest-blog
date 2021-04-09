@@ -782,6 +782,19 @@
     "@types/connect" "*"
     "@types/node" "*"
 
+"@types/cache-manager-ioredis@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.npm.taobao.org/@types/cache-manager-ioredis/download/@types/cache-manager-ioredis-2.0.1.tgz#04564ca52ba63bd20ae693ee6185469aab092507"
+  integrity sha1-BFZMpSumO9IK5pPuYYVGmqsJJQc=
+  dependencies:
+    "@types/cache-manager" "*"
+    "@types/ioredis" "*"
+
+"@types/cache-manager@*":
+  version "3.4.0"
+  resolved "https://registry.npm.taobao.org/@types/cache-manager/download/@types/cache-manager-3.4.0.tgz#414136ea3807a8cd071b8f20370c5df5dbffd382"
+  integrity sha1-QUE26jgHqM0HG48gNwxd9dv/04I=
+
 "@types/connect@*":
   version "3.4.34"
   resolved "https://registry.npm.taobao.org/@types/connect/download/@types/connect-3.4.34.tgz#170a40223a6d666006d93ca128af2beb1d9b1901"
@@ -843,6 +856,13 @@
   version "4.1.5"
   resolved "https://registry.npm.taobao.org/@types/graceful-fs/download/@types/graceful-fs-4.1.5.tgz#21ffba0d98da4350db64891f92a9e5db3cdb4e15"
   integrity sha1-If+6DZjaQ1DbZIkfkqnl2zzbThU=
+  dependencies:
+    "@types/node" "*"
+
+"@types/ioredis@*":
+  version "4.22.3"
+  resolved "https://registry.npm.taobao.org/@types/ioredis/download/@types/ioredis-4.22.3.tgz#72762efa0374c4a2e879ef697c6c3e4a47f9d641"
+  integrity sha1-cnYu+gN0xKLoee9pfGw+Skf51kE=
   dependencies:
     "@types/node" "*"
 
