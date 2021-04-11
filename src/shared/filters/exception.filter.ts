@@ -10,13 +10,13 @@ import {
   HttpException,
   ArgumentsHost,
   HttpStatus,
+  Logger,
 } from '@nestjs/common';
-import { AppLogger } from '@shared/logger/app.logger';
 import { HTTP_UNAUTHORIZED_TEXT_DEFAULT } from '@shared/constants/text.constant';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
-  constructor(private readonly logger: AppLogger) {}
+  constructor(private readonly logger: Logger) {}
   catch(exception: HttpException, host: ArgumentsHost) {
     const response = host.switchToHttp().getResponse();
     const status = exception.getStatus

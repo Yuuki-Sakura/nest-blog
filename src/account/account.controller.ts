@@ -31,7 +31,6 @@ export class AccountController {
   }
 
   @Get()
-  @Auth()
   getDetail(@Account() account) {
     return this.accountService.findById(account.id);
   }

@@ -11,7 +11,7 @@ import {
   EHttpStatus,
 } from '@shared/interfaces/http.interface';
 import { isProdMode } from '@app.environment';
-import { CROSS_DOMAIN } from '@app.config';
+import { CROSS_DOMAIN } from '@config';
 import * as TEXT from '@shared/constants/text.constant';
 
 /**
@@ -25,7 +25,7 @@ export class OriginMiddleware implements NestMiddleware {
     if (isProdMode) {
       const { origin, referer } = request.headers;
       const checkHeader = (field) =>
-        !field || field.includes(CROSS_DOMAIN.allowedReferer);
+        !field || field.includes(CROSS_DOMAIN.AllowReferer);
       const isVerifiedOrigin = checkHeader(origin);
       const isVerifiedReferer = checkHeader(referer);
       if (!isVerifiedOrigin && !isVerifiedReferer) {

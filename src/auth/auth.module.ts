@@ -4,15 +4,14 @@ import { JwtStrategy } from '@auth/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { AccountModule } from '@account/account.module';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule } from '@nestjs/config';
+import { JWT } from '@config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
     PassportModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: process.env.JWT_EXPIRES },
+      secret: JWT.SECRET,
+      signOptions: { expiresIn: JWT.EXPIRES },
     }),
     forwardRef(() => AccountModule),
   ],

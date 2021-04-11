@@ -5,6 +5,17 @@ import { BaseEntity } from '@shared/entity/base.entity';
 import { Role } from '@role/role.entity';
 import { Exclude } from 'class-transformer';
 
+export enum EGender {
+  Secrecy, //保密
+  Male, //男性
+  Female, //女性
+}
+
+export enum EAccountStatus {
+  active,
+  banned,
+}
+
 @Entity('account')
 export class AccountEntity extends BaseEntity {
   @Column({ length: 500, comment: '用户名', unique: true })
@@ -25,11 +36,21 @@ export class AccountEntity extends BaseEntity {
   avatar: string;
 
   @Column('simple-enum', {
-    enum: ['banned', 'active'],
-    default: 'active',
+    enum: EGender,
+    default: EGender.Secrecy,
+    comment: '性别',
+  })
+  gender: number;
+
+  @Column('timestamp', { comment: '生日' })
+  birthday: Date;
+
+  @Column('simple-enum', {
+    enum: EAccountStatus,
+    default: EAccountStatus.active,
     comment: '用户状态',
   })
-  status: string;
+  status: number;
 
   @Column('timestamp', { comment: '登陆时间', nullable: true })
   loginDate: Date;

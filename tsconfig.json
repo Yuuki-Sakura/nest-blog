@@ -15,8 +15,14 @@
     "outDir": "./dist",
     "baseUrl": "./src",
     "incremental": true,
+    "resolveJsonModule": true,
     "paths": {
-      "@*": ["./*"],
+      "@*": [
+        "./*"
+      ],
+      "@config": [
+        "../config.json"
+      ]
     }
   },
   "typeAcquisition": {

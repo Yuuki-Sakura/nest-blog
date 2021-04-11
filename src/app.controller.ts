@@ -5,12 +5,12 @@
  */
 
 import { Get, Controller } from '@nestjs/common';
-import * as APP_CONFIG from '@app.config';
+import { PROJECT } from '@config';
 
 @Controller()
 export class AppController {
   @Get()
   root(): any {
-    return APP_CONFIG.PROJECT;
+    return PROJECT;
   }
 }

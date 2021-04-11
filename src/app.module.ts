@@ -9,18 +9,16 @@ import { CategoryModule } from '@category/category.module';
 import { AppController } from '@app.controller';
 import { AuthModule } from '@auth/auth.module';
 import { RoleModule } from '@role/role.module';
-import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CacheModule } from '@shared/cache/cache.module';
 import { PermissionModule } from '@permission/permission.module';
 
 //配置文件
-import { DATABASE } from '@app.config';
+import { DATABASE } from '@config';
 
 // 业务模块
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: DATABASE.HOST,

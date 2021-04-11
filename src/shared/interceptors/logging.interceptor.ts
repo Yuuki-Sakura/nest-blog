@@ -6,12 +6,16 @@
 
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { NestInterceptor, CallHandler, ExecutionContext } from '@nestjs/common';
+import {
+  NestInterceptor,
+  CallHandler,
+  ExecutionContext,
+  Logger,
+} from '@nestjs/common';
 import { isDevMode } from '@app.environment';
-import { AppLogger } from '@shared/logger/app.logger';
 
 export class LoggingInterceptor implements NestInterceptor {
-  constructor(private readonly logger: AppLogger) {}
+  constructor(private readonly logger: Logger) {}
   intercept(
     context: ExecutionContext,
     next: CallHandler<any>,

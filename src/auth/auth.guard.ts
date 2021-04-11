@@ -11,14 +11,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { get } from 'lodash';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Cache } from 'cache-manager';
 import { Role } from '@role/role.entity';
 import { createConnection, Repository } from 'typeorm';
 import { Permission } from '@permission/permission.entity';
-import { DATABASE } from '@app.config';
+import { DATABASE } from '@config';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {
@@ -36,13 +35,13 @@ export class PermissionsGuard implements CanActivate {
 
     // 无权限标识的接口，直接通过
     if (permission) {
-      // if (request.params?.id != request.user.id) return false;
+      // if (!request.user) return false;
       // 获取用户角色
       const roles = (await this.cacheManager.get(request.user.id)) as Role[];
       if (!roles) return false;
       for (let i = 0; i < roles.length; i++) {
         for (let j = 0; j < roles[i].permissions.length; j++)
-          if (get(roles[j].permissions[j], permission)) return true;
+          if (roles[j].permissions[j].resources === permission) return true;
       }
       return false;
     }

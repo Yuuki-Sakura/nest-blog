@@ -7,10 +7,11 @@ import { ExceptionInterceptor } from '@shared/interceptors/exception.interceptor
 import { LoggingInterceptor } from '@shared/interceptors/logging.interceptor';
 import helmet from 'helmet';
 import compression from 'compression';
-import { AppLogger } from '@shared/logger/app.logger';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Logger } from '@nestjs/common';
+import { SERVER } from '@config';
 
-const logger = new AppLogger();
+const logger = new Logger('Nest Blog');
 
 async function bootstrap() {
   const app = await NestFactory.create(
@@ -27,7 +28,7 @@ async function bootstrap() {
     new LoggingInterceptor(logger),
     // new ClassSerializerInterceptor(new Reflector()),
   );
-  app.setGlobalPrefix(process.env.SERVER_PREFIX);
+  app.setGlobalPrefix(SERVER.PREFIX);
 
   const config = new DocumentBuilder()
     .addBearerAuth()
@@ -36,15 +37,19 @@ async function bootstrap() {
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/doc', app, document);
+  SwaggerModule.setup(SERVER.SWAGGER_PREFIX, app, document);
 
-  await app.listen(process.env.SERVER_PORT);
+  await app.listen(SERVER.PORT);
 }
 bootstrap().then(() => {
   logger.log(
-    `Nest Blog Run！at http://localhost:${process.env.SERVER_PORT}/api env:${environment}`,
+    `Nest Blog Run！at http://localhost:${
+      SERVER.PORT + SERVER.PREFIX
+    } env:${environment}`,
   );
   logger.log(
-    `Swagger is running at http://localhost:${process.env.SERVER_PORT}/api/doc`,
+    `Swagger is running at http://localhost:${
+      SERVER.PORT + SERVER.SWAGGER_PREFIX
+    }`,
   );
 });
