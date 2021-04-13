@@ -18,6 +18,7 @@ import { Role } from '@role/role.entity';
 import { createConnection, Repository } from 'typeorm';
 import { Permission } from '@permission/permission.entity';
 import { DATABASE } from '@config';
+import { isProdMode } from '@app.environment';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {
@@ -62,7 +63,7 @@ const getPermissionRepo = (function () {
         password: DATABASE.PASSWORD,
         database: DATABASE.DATABASE,
         entities: [Permission],
-        logging: true,
+        logging: !isProdMode,
       }).then((connection) => connection.getRepository(Permission));
     return permissionRepo;
   };
