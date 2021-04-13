@@ -3,31 +3,27 @@ import { AppModule } from '@app.module';
 import { environment } from '@app.environment';
 import { TransformInterceptor } from '@shared/interceptors/transform.interceptor';
 import { HttpExceptionFilter } from '@shared/filters/exception.filter';
-import { ExceptionInterceptor } from '@shared/interceptors/exception.interceptor';
 import { LoggingInterceptor } from '@shared/interceptors/logging.interceptor';
 import helmet from 'helmet';
 import compression from 'compression';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Logger } from '@nestjs/common';
 import { SERVER } from '@config';
+import { ValidationPipe } from '@shared/pipes/validation.pipe';
 
 const logger = new Logger('Nest Blog');
 
 async function bootstrap() {
-  const app = await NestFactory.create(
-    AppModule,
-    // isProdMode ? { logger: false } : undefined,
-  );
+  const app = await NestFactory.create(AppModule);
   app.use(helmet());
   app.use(compression());
   app.useLogger(logger);
   app.useGlobalFilters(new HttpExceptionFilter(logger));
   app.useGlobalInterceptors(
     new TransformInterceptor(new Reflector()),
-    new ExceptionInterceptor(new Reflector()),
     new LoggingInterceptor(logger),
-    // new ClassSerializerInterceptor(new Reflector()),
   );
+  app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix(SERVER.PREFIX);
 
   const config = new DocumentBuilder()

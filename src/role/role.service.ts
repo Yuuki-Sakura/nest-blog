@@ -31,12 +31,10 @@ export class RoleService {
     return this.roleRepository.save(role);
   }
 
-  update(id: string, roleDto: UpdateRoleDto) {
-    const role = this.roleRepository.findOne(id);
+  async update(id: string, roleDto: UpdateRoleDto) {
+    const role = await this.roleRepository.findOne(id);
     if (!role) throw new BadRequestException('角色Id无效');
-    return this.roleRepository.save(
-      (Object.assign(role, roleDto) as unknown) as Role,
-    );
+    return this.roleRepository.save(Object.assign({}, role, roleDto) as Role);
   }
 
   delete(id: string | string[]) {

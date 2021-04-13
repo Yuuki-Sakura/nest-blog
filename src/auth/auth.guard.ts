@@ -95,7 +95,7 @@ export const Auth = (permission?: string, name?: string) => {
   } else return applyDecorators(ApiBearerAuth(), UseGuards(AuthGuard('jwt')));
 };
 
-export const Account = createParamDecorator(
+export const User = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
     if (!request.user) throw new UnauthorizedException('请登录');

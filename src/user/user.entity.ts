@@ -11,13 +11,13 @@ export enum EGender {
   Female, //女性
 }
 
-export enum EAccountStatus {
+export enum EUserStatus {
   active,
   banned,
 }
 
-@Entity('account')
-export class AccountEntity extends BaseEntity {
+@Entity('user')
+export class UserEntity extends BaseEntity {
   @Column({ length: 500, comment: '用户名', unique: true })
   username: string;
 
@@ -42,12 +42,12 @@ export class AccountEntity extends BaseEntity {
   })
   gender: number;
 
-  @Column('timestamp', { comment: '生日' })
+  @Column('timestamp', { comment: '生日', default: null })
   birthday: Date;
 
   @Column('simple-enum', {
-    enum: EAccountStatus,
-    default: EAccountStatus.active,
+    enum: EUserStatus,
+    default: EUserStatus.active,
     comment: '用户状态',
   })
   status: number;

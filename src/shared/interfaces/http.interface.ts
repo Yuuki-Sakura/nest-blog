@@ -43,7 +43,7 @@ export type THttpErrorResponse = IHttpResponseBase & {
 
 // HTTP success 返回
 export type THttpSuccessResponse<T> = IHttpResponseBase & {
-  data: T | IHttpResultPaginate<T>;
+  data?: T | IHttpResultPaginate<T>;
 };
 
 // HTTP Response

@@ -44,11 +44,12 @@ export class TransformInterceptor<T>
     );
     return next.handle().pipe(
       map((data: any) => {
+        const isString = typeof data === 'string';
         return {
           code: statusCode || context.switchToHttp().getResponse().statusCode,
           status: EHttpStatus.Success,
-          message,
-          data,
+          message: isString ? data : message,
+          data: !isString ? data : undefined,
         };
       }),
     );

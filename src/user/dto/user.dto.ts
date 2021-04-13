@@ -1,6 +1,6 @@
 import { BaseEntity } from '@shared/entity/base.entity';
 
-export class AccountDto implements BaseEntity {
+export class UserDto implements BaseEntity {
   createDate: Date;
   id: string;
   updateDate: Date;

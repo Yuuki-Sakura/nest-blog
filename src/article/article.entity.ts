@@ -7,7 +7,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { Tag } from '@tag/tag.entity';
-import { AccountEntity } from '@account/account.entity';
+import { UserEntity } from '@user/user.entity';
 import { CategoryEntity } from '@category/category.entity';
 import { BaseEntity } from '@shared/entity/base.entity';
 import { Comment } from '@article/comment.entity';
@@ -31,8 +31,8 @@ export class ArticleEntity extends BaseEntity {
   @JoinColumn()
   tags: Tag[];
 
-  @ManyToOne(() => AccountEntity, (user) => user.articles)
-  author: AccountEntity;
+  @ManyToOne(() => UserEntity, (user) => user.articles)
+  author: UserEntity;
 
   @OneToMany(() => Comment, (comment) => comment.article)
   @JoinColumn()

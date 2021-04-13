@@ -2,7 +2,7 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 //中间件
 import { OriginMiddleware } from '@shared/middlewares/origin.middleware';
 import { CorsMiddleware } from '@shared/middlewares/cors.middleware';
-import { AccountModule } from '@account/account.module';
+import { UserModule } from '@user/user.module';
 import { ArticleModule } from '@article/article.module';
 import { TagModule } from '@tag/tag.module';
 import { CategoryModule } from '@category/category.module';
@@ -15,6 +15,7 @@ import { PermissionModule } from '@permission/permission.module';
 
 //配置文件
 import { DATABASE } from '@config';
+import { isProdMode } from '@app.environment';
 
 // 业务模块
 @Module({
@@ -28,10 +29,10 @@ import { DATABASE } from '@config';
       database: DATABASE.DATABASE,
       synchronize: true,
       autoLoadEntities: true,
-      logging: true,
+      logging: !isProdMode,
     }),
     CacheModule,
-    AccountModule,
+    UserModule,
     ArticleModule,
     TagModule,
     CategoryModule,
