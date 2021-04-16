@@ -10,5 +10,5 @@ export class Permission extends BaseEntity {
 
   @ApiProperty()
   @Column({ comment: '资源', unique: true })
-  resources: string;
+  resource: string;
 }

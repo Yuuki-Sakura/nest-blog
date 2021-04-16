@@ -1,5 +1,6 @@
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToMany,
@@ -11,6 +12,7 @@ import { UserEntity } from '@user/user.entity';
 import { CategoryEntity } from '@category/category.entity';
 import { BaseEntity } from '@shared/entity/base.entity';
 import { Comment } from '@article/comment.entity';
+import { Timestamp } from '@shared/decorator/timestamp.decorator';
 
 @Entity('article')
 export class ArticleEntity extends BaseEntity {
@@ -36,4 +38,15 @@ export class ArticleEntity extends BaseEntity {
   @OneToMany(() => Comment, (comment) => comment.article)
   @JoinColumn()
   comments: Comment[];
+
+  @Column({ default: false })
+  published: boolean;
+
+  @DeleteDateColumn({
+    type: 'timestamp',
+    comment: '删除时间',
+    name: 'delete_time',
+  })
+  @Timestamp()
+  deleteTime: Date;
 }

@@ -8,4 +8,8 @@ export class TagService {
   constructor(
     @InjectRepository(Tag) private readonly repository: Repository<Tag>,
   ) {}
+
+  findByIds(ids: string[]) {
+    return this.repository.findByIds(ids);
+  }
 }
