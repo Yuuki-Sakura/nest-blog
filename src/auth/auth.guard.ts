@@ -36,9 +36,8 @@ export class PermissionsGuard implements CanActivate {
 
     // 无权限标识的接口，直接通过
     if (permission) {
-      // if (!request.user) return false;
       // 获取用户角色
-      const roles = (await this.cacheManager.get(request.user.id)) as Role[];
+      const roles = await this.cacheManager.get<Role[]>(request.user.id);
       if (!roles) return false;
       for (let i = 0; i < roles.length; i++) {
         for (let j = 0; j < roles[i].permissions.length; j++)

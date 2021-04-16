@@ -1,11 +1,6 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 import { UserEntity } from '@user/user.entity';
-import { UserLoginDto } from '@user/dto/user-login.dto';
 import { UserRegisterDto } from '@user/dto/user-register.dto';
 import { HttpBadRequestException } from '@shared/exception/bad-request.exception';
 
@@ -20,22 +15,12 @@ export class UserRepository extends Repository<UserEntity> {
       .getOne();
   }
 
-  async login(user: UserLoginDto) {
-    const user1 = this.findOneByUsernameOrEmail(user.username);
-    if (!user1) {
-      throw new NotFoundException(
-        'Could not find user by username or email: ' + user.username,
-      );
-    }
-    return user;
-  }
-
   async register(user: UserRegisterDto) {
     if (await this.findOne({ username: user.username })) {
       throw new BadRequestException(`用户名：'${user.username}' 已被使用`);
     }
     const result = await this.save(
-      Object.assign(new UserEntity(), user) as UserEntity,
+      Object.assign({}, new UserEntity(), user) as UserEntity,
     );
     if (!result) {
       throw new HttpBadRequestException('注册失败');

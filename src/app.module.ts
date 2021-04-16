@@ -16,6 +16,8 @@ import { PermissionModule } from '@permission/permission.module';
 //配置文件
 import { DATABASE } from '@config';
 import { isProdMode } from '@app.environment';
+import { HttpLogModule } from '@http-log/http-log.module';
+import { LoggingMiddleware } from '@shared/middlewares/logging.middleware';
 
 // 业务模块
 @Module({
@@ -39,11 +41,14 @@ import { isProdMode } from '@app.environment';
     AuthModule,
     RoleModule,
     PermissionModule,
+    HttpLogModule,
   ],
   controllers: [AppController],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CorsMiddleware, OriginMiddleware).forRoutes('*');
+    consumer
+      .apply(LoggingMiddleware, CorsMiddleware, OriginMiddleware)
+      .forRoutes('*');
   }
 }

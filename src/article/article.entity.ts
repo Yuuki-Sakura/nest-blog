@@ -2,9 +2,9 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
 } from 'typeorm';
 import { Tag } from '@tag/tag.entity';
 import { UserEntity } from '@user/user.entity';
@@ -23,11 +23,10 @@ export class ArticleEntity extends BaseEntity {
   @Column({ default: '' })
   body: string;
 
-  @OneToOne(() => CategoryEntity)
-  @JoinColumn()
+  @ManyToOne(() => CategoryEntity, (category) => category.articles)
   category: CategoryEntity;
 
-  @OneToMany(() => Tag, (tag) => tag.article)
+  @ManyToMany(() => Tag)
   @JoinColumn()
   tags: Tag[];
 

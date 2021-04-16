@@ -5,10 +5,10 @@
  */
 
 import { Request, Response } from 'express';
-import { Injectable, NestMiddleware, HttpStatus } from '@nestjs/common';
+import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
 import {
-  THttpErrorResponse,
   EHttpStatus,
+  THttpErrorResponse,
 } from '@shared/interfaces/http.interface';
 import { isProdMode } from '@app.environment';
 import { CROSS_DOMAIN } from '@config';
@@ -20,7 +20,7 @@ import * as TEXT from '@shared/constants/text.constant';
  */
 @Injectable()
 export class OriginMiddleware implements NestMiddleware {
-  use(request: Request, response: Response, next) {
+  use(request: Request, response: Response, next: () => void) {
     // 如果是生产环境，需要验证用户来源渠道，防止非正常请求
     if (isProdMode) {
       const { origin, referer } = request.headers;
@@ -30,6 +30,7 @@ export class OriginMiddleware implements NestMiddleware {
       const isVerifiedReferer = checkHeader(referer);
       if (!isVerifiedOrigin && !isVerifiedReferer) {
         return response.status(HttpStatus.UNAUTHORIZED).jsonp({
+          code: HttpStatus.UNAUTHORIZED,
           status: EHttpStatus.Error,
           message: TEXT.HTTP_ANONYMOUS_TEXT,
         } as THttpErrorResponse);

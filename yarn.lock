@@ -3241,8 +3241,8 @@ human-signals@^1.1.1:
 
 husky@^6.0.0:
   version "6.0.0"
-  resolved "https://registry.yarnpkg.com/husky/-/husky-6.0.0.tgz#810f11869adf51604c32ea577edbc377d7f9319e"
-  integrity sha512-SQS2gDTB7tBN486QSoKPKQItZw97BMOd+Kdb6ghfpBc0yXyzrddI0oDV5MkDAbuB4X2mO3/nj60TRMcYxwzZeQ==
+  resolved "https://registry.npm.taobao.org/husky/download/husky-6.0.0.tgz?cache=0&sync_timestamp=1617004245593&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fhusky%2Fdownload%2Fhusky-6.0.0.tgz#810f11869adf51604c32ea577edbc377d7f9319e"
+  integrity sha1-gQ8RhprfUWBMMupXftvDd9f5MZ4=
 
 iconv-lite@0.4.24, iconv-lite@^0.4.24:
   version "0.4.24"
@@ -4638,6 +4638,11 @@ neo-async@^2.6.2:
   version "2.6.2"
   resolved "https://registry.npm.taobao.org/neo-async/download/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha1-tKr7k+OustgXTKU88WOrfXMIMF8=
+
+nestjs-typeorm-paginate@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.npm.taobao.org/nestjs-typeorm-paginate/download/nestjs-typeorm-paginate-2.3.2.tgz#34acb0ef02894b0399b9adb1f9b11e901da9f9a4"
+  integrity sha1-NKyw7wKJSwOZua2x+bEekB2p+aQ=
 
 nice-try@^1.0.4:
   version "1.0.5"

@@ -4,6 +4,7 @@ import { IsEmail } from 'class-validator';
 import { BaseEntity } from '@shared/entity/base.entity';
 import { Role } from '@role/role.entity';
 import { Exclude } from 'class-transformer';
+import { Timestamp } from '@shared/decorator/timestamp.decorator';
 
 export enum EGender {
   Secrecy, //保密
@@ -52,8 +53,12 @@ export class UserEntity extends BaseEntity {
   })
   status: number;
 
-  @Column('timestamp', { comment: '登陆时间', nullable: true })
-  loginDate: Date;
+  @Timestamp({
+    name: 'login_time',
+    comment: '登陆时间',
+    nullable: true,
+  })
+  loginTime: Date;
 
   @OneToMany(() => ArticleEntity, (article) => article.author)
   articles: ArticleEntity[];

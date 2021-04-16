@@ -16,6 +16,7 @@ import { UserRegisterDto } from '@user/dto/user-register.dto';
 import { AuthService } from '@auth/auth.service';
 import { Auth, User } from '@auth/auth.guard';
 import { UserUpdateDto } from '@user/dto/user-update.dto';
+import { UserLoginResultDto } from '@user/dto/user-login-result.dto';
 
 @ApiTags('account')
 @Controller('/account')
@@ -41,18 +42,19 @@ export class UserController {
     return this.userService.findOneByUsernameOrEmail(username);
   }
 
-  @ApiBody({ type: UserLoginDto })
-  @HttpCode(HttpStatus.OK)
   @Post('login')
+  @HttpCode(HttpStatus.OK)
+  @ApiBody({ type: UserLoginDto })
+  @ApiResponse({ type: UserLoginResultDto })
   async login(@Body() user: UserLoginDto) {
     const { username, password } = user;
     const authResult = await this.authService.validateUser(username, password),
       token = await this.authService.certificate(authResult);
     delete authResult.password;
-    return {
+    return Object.assign(new UserLoginResultDto(), {
       ...authResult,
       token,
-    };
+    });
   }
 
   @ApiBody({ type: UserRegisterDto })
@@ -63,7 +65,7 @@ export class UserController {
   }
 
   @Post('test')
-  @Auth('user.test', '测试')
+  // @Auth('user.test', '测试')
   async test() {
     return 'success';
   }

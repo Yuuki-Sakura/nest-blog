@@ -5,6 +5,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { Timestamp } from '@shared/decorator/timestamp.decorator';
 
 @Entity()
 export class BaseEntity {
@@ -18,7 +19,8 @@ export class BaseEntity {
     comment: '创建时间',
     name: 'create_time',
   })
-  createDate: Date;
+  @Timestamp()
+  createTime: Date;
 
   @ApiProperty()
   @UpdateDateColumn({
@@ -26,5 +28,6 @@ export class BaseEntity {
     comment: '更新时间',
     name: 'update_time',
   })
-  updateDate: Date;
+  @Timestamp()
+  updateTime: Date;
 }

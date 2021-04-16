@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { BaseEntity } from '@shared/entity/base.entity';
 import { ArticleEntity } from '@article/article.entity';
 
@@ -7,6 +7,6 @@ export class CategoryEntity extends BaseEntity {
   @Column()
   name: string;
 
-  @ManyToOne(() => ArticleEntity, (article) => article.category)
-  article: ArticleEntity[];
+  @OneToMany(() => ArticleEntity, (article) => article.category)
+  articles: ArticleEntity[];
 }

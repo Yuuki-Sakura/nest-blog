@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 import { ArticleEntity } from '@article/article.entity';
 import { BaseEntity } from '@shared/entity/base.entity';
 
@@ -7,6 +7,7 @@ export class Tag extends BaseEntity {
   @Column()
   tag: string;
 
-  @ManyToOne(() => ArticleEntity, (article) => article.tags)
-  article: ArticleEntity;
+  @ManyToMany(() => ArticleEntity)
+  @JoinTable()
+  articles: ArticleEntity[];
 }
