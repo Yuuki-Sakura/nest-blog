@@ -17,7 +17,9 @@ import { PermissionModule } from '@permission/permission.module';
 import { DATABASE } from '@config';
 import { isProdMode } from '@app.environment';
 import { HttpLogModule } from '@http-log/http-log.module';
-import { LoggingMiddleware } from '@shared/middlewares/logging.middleware';
+import { ExceptionFilterProvider } from '@shared/filters/exception.filter';
+import { LoggingInterceptorProvider } from '@shared/interceptors/logging.interceptor';
+import { LoggerModule } from '@app.logger';
 
 // 业务模块
 @Module({
@@ -42,13 +44,16 @@ import { LoggingMiddleware } from '@shared/middlewares/logging.middleware';
     RoleModule,
     PermissionModule,
     HttpLogModule,
+    LoggerModule,
   ],
+  providers: [ExceptionFilterProvider, LoggingInterceptorProvider],
   controllers: [AppController],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(LoggingMiddleware, CorsMiddleware, OriginMiddleware)
+      // .apply(LoggingMiddleware, CorsMiddleware, OriginMiddleware)
+      .apply(CorsMiddleware, OriginMiddleware)
       .forRoutes('*');
   }
 }

@@ -27,7 +27,7 @@ export class AuthService {
   async certificate(user: UserEntity) {
     const { username, password, roles, id } = user;
     if (roles) await this.cacheManager.set(id, roles);
-    user.loginTime = new Date();
+    user.loginAt = new Date();
     await this.userService.update(user.id, user);
     return this.jwtService.sign({ username, password });
   }

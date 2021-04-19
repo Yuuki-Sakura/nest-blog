@@ -10,7 +10,15 @@ export class CategoryService {
     private readonly repository: Repository<CategoryEntity>,
   ) {}
 
-  findById(id: string) {
+  findAll() {
+    return this.repository.find();
+  }
+
+  async findArticleById(id: string) {
+    return (await this.repository.findOne({ id })).articles;
+  }
+
+  async findById(id: string) {
     return this.repository.findOne({ id });
   }
 }

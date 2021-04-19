@@ -25,7 +25,7 @@ export class UserRepository extends Repository<UserEntity> {
     if (!result) {
       throw new HttpBadRequestException('注册失败');
     } else {
-      return '注册成功';
+      return result;
     }
   }
 }

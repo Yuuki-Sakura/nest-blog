@@ -7,6 +7,7 @@ export class UserDto implements BaseEntity {
   phone: string;
   avatar: string;
   status: string;
-  createTime: Date;
-  updateTime: Date;
+  createAt: Date;
+  updateAt: Date;
+  deleteAt: Date;
 }

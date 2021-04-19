@@ -4,6 +4,7 @@ import { Permission } from '@permission/permission.entity';
 import { PermissionCreateDto } from '@permission/dto/permission-create.dto';
 import { PermissionUpdateDto } from '@permission/dto/permission-update.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { FindConditions } from 'typeorm/find-options/FindConditions';
 
 @Injectable()
 export class PermissionService {
@@ -24,12 +25,19 @@ export class PermissionService {
     return this.permissionRepo.findOne({ name });
   }
 
+  findOne(conditions?: FindConditions<Permission>) {
+    return this.permissionRepo.findOne(conditions);
+  }
+
   findByIds(ids: string[]) {
     return this.permissionRepo.findByIds(ids);
   }
 
   save(permission: PermissionCreateDto) {
-    return this.permissionRepo.save(this.permissionRepo.create(permission));
+    return this.permissionRepo.save({
+      ...this.permissionRepo.create(),
+      ...permission,
+    });
   }
 
   update(id: string, permission: PermissionUpdateDto) {

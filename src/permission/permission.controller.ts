@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { PermissionService } from '@permission/permission.service';
-import { Auth } from '@auth/auth.guard';
+import { Auth } from '@auth/auth.utils';
 import { PermissionCreateDto } from '@permission/dto/permission-create.dto';
 import { PermissionUpdateDto } from '@permission/dto/permission-update.dto';
 import { ApiTags } from '@nestjs/swagger';

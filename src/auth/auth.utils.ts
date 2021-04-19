@@ -5,22 +5,19 @@ import {
   applyDecorators,
   createParamDecorator,
   ExecutionContext,
-  ForbiddenException,
   SetMetadata,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { createConnection, Repository } from 'typeorm';
-import { Permission as PermissionEntity } from '@permission/permission.entity';
-import { DATABASE } from '@config';
-import { isProdMode } from '@app.environment';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { PermissionsGuard } from '@auth/auth.guard';
+import { ContentGuard } from '@auth/content.guard';
 
 export function hasPermission(resource: string, user: UserEntity): boolean;
 export function hasPermission(resource: string, roles: Role[]): boolean;
 export function hasPermission(resource: string, user: UserEntity | Role[]) {
+  if (!resource) return false;
   if (user instanceof UserEntity) {
     const roles = user.roles;
     if (roles?.length == 0) return false;
@@ -49,57 +46,49 @@ export function hasContentPermission<Entity extends BaseEntity>(
     items.forEach((item) => {
       if (item.id != id) hasPerm = true;
     });
-    if (!hasPerm) throw new ForbiddenException('无权限');
+    return hasPerm;
   }
+  return true;
 }
 
-const getPermissionRepo = (function () {
-  let permissionRepo: Repository<PermissionEntity>;
-  return async function () {
-    if (!permissionRepo)
-      permissionRepo = await createConnection({
-        type: 'mysql',
-        host: DATABASE.HOST,
-        port: DATABASE.PORT,
-        username: DATABASE.USERNAME,
-        password: DATABASE.PASSWORD,
-        database: DATABASE.DATABASE,
-        entities: [Permission],
-        logging: !isProdMode,
-      }).then((connection) => connection.getRepository(PermissionEntity));
-    return permissionRepo;
-  };
-})();
-const setPermission = async (resource: string, name: string) => {
-  const permissionRepo = await getPermissionRepo();
-  permissionRepo.findOne({ resource }).then((result) => {
-    if (result) {
-      if (result.name != name)
-        permissionRepo.update(
-          result.id,
-          Object.assign(result, { resource, name }),
-        );
-    } else {
-      permissionRepo.save(
-        Object.assign(new PermissionEntity(), { resource, name }),
-      );
-    }
-  });
+export const ContentProtect = (
+  key: keyof UserEntity,
+  resource?: string,
+  name?: string,
+) => {
+  const perm = resource ? Permission(resource, name) : undefined;
+  return applyDecorators(
+    ApiBearerAuth(),
+    SetMetadata('key', key),
+    UseGuards(AuthGuard('jwt'), ContentGuard),
+    perm,
+  );
 };
 
-export const Auth = (permission?: string, name?: string) => {
-  if (permission) {
+export const Auth = (resource?: string, name?: string) => {
+  if (resource) {
     return applyDecorators(
       ApiBearerAuth(),
       UseGuards(AuthGuard('jwt'), PermissionsGuard),
-      Permission(permission, name),
+      Permission(resource, name),
     );
   } else return applyDecorators(ApiBearerAuth(), UseGuards(AuthGuard('jwt')));
 };
 
+export const permissions: {
+  name: string;
+  resource: string;
+  target: object;
+  descriptor: TypedPropertyDescriptor<any>;
+}[] = [];
+
 export const Permission = (resource: string, name?: string) => {
-  setPermission(resource, name);
-  return applyDecorators(SetMetadata('resource', resource));
+  return applyDecorators(
+    SetMetadata('resource', resource),
+    (target, propertyKey, descriptor) => {
+      permissions.push({ resource, name, target, descriptor });
+    },
+  );
 };
 
 export { Permission as Perm };

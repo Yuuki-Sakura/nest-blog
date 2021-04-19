@@ -9,16 +9,24 @@ import {
   ExceptionFilter,
   HttpException,
   HttpStatus,
-  Logger,
+  Inject,
 } from '@nestjs/common';
 import { HTTP_UNAUTHORIZED_TEXT_DEFAULT } from '@shared/constants/text.constant';
+import { APP_FILTER } from '@nestjs/core';
+import { Response } from 'express';
+import { HttpLogService } from '@http-log/http-log.service';
+import { AppLogger } from '@app.logger';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
-  constructor(private readonly logger: Logger) {}
+  constructor(
+    @Inject(AppLogger) private readonly logger: AppLogger,
+    @Inject(HttpLogService) private readonly logService: HttpLogService,
+  ) {}
 
   catch(exception: HttpException, host: ArgumentsHost) {
-    const response = host.switchToHttp().getResponse();
+    const response = host.switchToHttp().getResponse<Response>();
+    const request = host.switchToHttp().getRequest();
     const status = exception.getStatus
       ? exception.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR
       : HttpStatus.INTERNAL_SERVER_ERROR;
@@ -27,7 +35,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       code: status,
       status: EHttpStatus.Error,
       message: exception.message,
-      stack: isDevMode ? stack : null,
+      stack: null,
     };
     // 对默认的 404 进行特殊处理
     if (status === HttpStatus.NOT_FOUND) {
@@ -39,7 +47,37 @@ export class HttpExceptionFilter implements ExceptionFilter {
     if (status === HttpStatus.FORBIDDEN) {
       data.message = '没有权限';
     }
-    this.logger.error(stack);
+    const content = request.method + ' -> ' + request.url;
+    this.logger.error(
+      `Error Response: ${content} HTTP/${request.httpVersion} ${status} ${request.headers['user-agent']}`,
+    );
+    if (
+      !(
+        status === HttpStatus.NOT_FOUND ||
+        status === HttpStatus.UNAUTHORIZED ||
+        status === HttpStatus.FORBIDDEN
+      ) &&
+      isDevMode
+    ) {
+      data.stack = stack;
+      this.logger.error(stack);
+    }
+    this.logService.create({
+      method: request.method,
+      url: request.originalUrl,
+      status: status,
+      httpVersion: request.httpVersion,
+      userAgent: request.headers['user-agent'],
+      host: request.headers['host'],
+      ip: request.ip,
+      requestTime: new Date(Date.now()),
+      headers: request.headers,
+    });
     return response.status(status).jsonp(data);
   }
 }
+
+export const ExceptionFilterProvider = {
+  provide: APP_FILTER,
+  useClass: HttpExceptionFilter,
+};

@@ -2,39 +2,57 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Role } from '@role/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UpdateRoleDto } from '@role/dto/role-update.dto';
+import { RoleUpdateDto } from '@role/dto/role-update.dto';
+import { RoleCreateDto } from '@role/dto/role-create.dto';
+import { PermissionService } from '@permission/permission.service';
 
 @Injectable()
 export class RoleService {
   constructor(
     @InjectRepository(Role)
     private readonly roleRepository: Repository<Role>,
+    private readonly permissionService: PermissionService,
   ) {}
 
   findById(id: string) {
-    return this.roleRepository.findOne(id);
+    return this.roleRepository.findOne(id, { relations: ['permissions'] });
   }
 
   findByIds(ids: string[]) {
-    return this.roleRepository.findByIds(ids);
+    return this.roleRepository.findByIds(ids, { relations: ['permissions'] });
   }
 
   findOneByName(name: string) {
-    return this.roleRepository.findOne({ name });
+    return this.roleRepository.findOne(
+      { name },
+      { relations: ['permissions'] },
+    );
   }
 
   findAll() {
-    return this.roleRepository.find();
+    return this.roleRepository.find({ relations: ['permissions'] });
   }
 
-  save(role: Role) {
-    return this.roleRepository.save(role);
+  async save(role: RoleCreateDto) {
+    return this.roleRepository.save(
+      Object.assign(new Role(), {
+        name: role.name,
+        permissions: await this.permissionService.findByIds(role.permissionIds),
+      }) as Role,
+    );
   }
 
-  async update(id: string, roleDto: UpdateRoleDto) {
+  async update(id: string, roleDto: RoleUpdateDto) {
     const role = await this.roleRepository.findOne(id);
     if (!role) throw new BadRequestException('角色Id无效');
-    return this.roleRepository.save(Object.assign({}, role, roleDto) as Role);
+    return this.roleRepository.save(
+      Object.assign({}, role, {
+        name: roleDto.name,
+        permissions: await this.permissionService.findByIds(
+          roleDto.permissionIds,
+        ),
+      }) as Role,
+    );
   }
 
   delete(id: string | string[]) {

@@ -23,7 +23,10 @@
       "@config": [
         "../config.json"
       ]
-    }
+    },
+    "lib": [
+      "es2017"
+    ]
   },
   "typeAcquisition": {
     "include": [

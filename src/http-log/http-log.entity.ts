@@ -1,8 +1,16 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { IsIP } from 'class-validator';
 import { Timestamp } from '@shared/decorator/timestamp.decorator';
+import { HttpStatus } from '@nestjs/common';
 
-type TMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS' | 'HEAD';
+export type TMethod =
+  | 'GET'
+  | 'POST'
+  | 'PUT'
+  | 'DELETE'
+  | 'PATCH'
+  | 'OPTIONS'
+  | 'HEAD';
 
 @Entity('http_log')
 export class HttpLogEntity {
@@ -14,6 +22,9 @@ export class HttpLogEntity {
 
   @Column({ comment: '请求URL' })
   url: string;
+
+  @Column('simple-enum', { enum: HttpStatus, comment: '响应状态码' })
+  status: HttpStatus;
 
   @Column({ name: 'http_version', comment: 'HTTP协议版本' })
   httpVersion: string;

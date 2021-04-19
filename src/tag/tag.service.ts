@@ -9,7 +9,15 @@ export class TagService {
     @InjectRepository(Tag) private readonly repository: Repository<Tag>,
   ) {}
 
+  findAll() {
+    return this.repository.find();
+  }
+
+  findById(id: string) {
+    return this.repository.findOne({ id }, { relations: ['articles'] });
+  }
+
   findByIds(ids: string[]) {
-    return this.repository.findByIds(ids);
+    return this.repository.findByIds(ids, { relations: ['articles'] });
   }
 }

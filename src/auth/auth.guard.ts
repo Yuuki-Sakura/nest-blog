@@ -20,7 +20,7 @@ export class PermissionsGuard implements CanActivate {
   async canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
     const permission = this.reflector.get<string>(
-      'permission',
+      'resource',
       context.getHandler(),
     );
     // 无权限标识的接口，直接通过

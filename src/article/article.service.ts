@@ -35,8 +35,9 @@ export class ArticleService {
       body,
       summary,
     });
-    article.tags = await this.tagService.findByIds(tagIds);
-    article.category = await this.categoryService.findById(categoryId);
+    if (tagIds) article.tags = await this.tagService.findByIds(tagIds);
+    if (categoryId)
+      article.category = await this.categoryService.findById(categoryId);
     return this.repository.save(article);
   }
 

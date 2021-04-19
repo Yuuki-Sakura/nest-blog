@@ -1,5 +1,6 @@
 import {
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -17,17 +18,25 @@ export class BaseEntity {
   @CreateDateColumn({
     type: 'timestamp',
     comment: '创建时间',
-    name: 'create_time',
+    name: 'create_at',
   })
   @Timestamp()
-  createTime: Date;
+  createAt: Date;
 
   @ApiProperty()
   @UpdateDateColumn({
     type: 'timestamp',
     comment: '更新时间',
-    name: 'update_time',
+    name: 'update_at',
   })
   @Timestamp()
-  updateTime: Date;
+  updateAt: Date;
+
+  @DeleteDateColumn({
+    type: 'timestamp',
+    comment: '删除时间',
+    name: 'delete_at',
+  })
+  @Timestamp()
+  deleteAt: Date;
 }

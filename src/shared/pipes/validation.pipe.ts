@@ -6,7 +6,7 @@
 
 import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
-import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common';
+import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
 import { ValidationException } from '@shared/exception/validation.exception';
 
 /**
@@ -14,7 +14,7 @@ import { ValidationException } from '@shared/exception/validation.exception';
  * @classdesc 验证所有使用 class-validator 的地方的 class 模型
  */
 @Injectable()
-export class ValidationPipe implements PipeTransform<any> {
+export class ValidationPipe implements PipeTransform {
   async transform(value, { metatype }: ArgumentMetadata) {
     if (!metatype || !this.toValidate(metatype)) {
       return value;

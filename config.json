@@ -5,7 +5,10 @@
     "author": "結城桜"
   },
   "CROSS_DOMAIN": {
-    "AllowOrigins": ["https://zy.ci", "https://admin.zy.ci"],
+    "AllowOrigins": [
+      "https://zy.ci",
+      "https://admin.zy.ci"
+    ],
     "AllowReferer": "zy.ci"
   },
   "SERVER": {
@@ -27,5 +30,10 @@
   "REDIS": {
     "HOST": "localhost",
     "PORT": 6379
+  },
+  "ADMIN": {
+    "USERNAME": "admin",
+    "EMAIL": "admin@zy.ci",
+    "PASSWORD": "admin"
   }
 }

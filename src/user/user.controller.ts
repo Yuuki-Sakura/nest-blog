@@ -60,7 +60,7 @@ export class UserController {
   @ApiBody({ type: UserRegisterDto })
   @HttpCode(HttpStatus.OK)
   @Post('register')
-  async register(@Body() user: UserRegisterDto): Promise<string> {
+  async register(@Body() user: UserRegisterDto) {
     return this.userService.register(user);
   }
 

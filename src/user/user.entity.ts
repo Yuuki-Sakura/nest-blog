@@ -54,11 +54,11 @@ export class UserEntity extends BaseEntity {
   status: number;
 
   @Timestamp({
-    name: 'login_time',
+    name: 'login_at',
     comment: '登陆时间',
     nullable: true,
   })
-  loginTime: Date;
+  loginAt: Date;
 
   @OneToMany(() => ArticleEntity, (article) => article.author)
   articles: ArticleEntity[];
