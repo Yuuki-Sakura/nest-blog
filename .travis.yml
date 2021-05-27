@@ -1,0 +1,15 @@
+sudo: required
+language: node_js
+node_js:
+  - 'lts/*'
+before_install:
+  - npm install -g pnpm
+install:
+  - pnpm install
+before_script:
+  - docker-compose -f docker-compose.yml up -d
+script:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push yuukisakura/nest-blog:latest
+services:
+  - docker
