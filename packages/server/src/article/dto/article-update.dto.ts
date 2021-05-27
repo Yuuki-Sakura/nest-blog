@@ -10,7 +10,7 @@ export class ArticleUpdateDto {
   @ApiProperty({ required: false })
   categoryId?: string;
   @ApiProperty({ required: false })
-  tagIds?: string[];
+  tags?: string[];
   @ApiProperty({ required: false })
   published?: boolean;
   @ApiProperty({ required: false })

@@ -1,12 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
-import { Tag } from '@tag/tag.entity';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { UserEntity } from '@user/user.entity';
 import { Category } from '@category/category.entity';
 import { BaseEntity } from '@shared/entity/base.entity';
@@ -33,10 +25,10 @@ export class Article extends BaseEntity {
   @ManyToOne(() => Category, (category) => category.articles)
   category: Category;
 
-  @Field(() => [Tag])
-  @ManyToMany(() => Tag)
+  @Field()
+  @Column('simple-array')
   @JoinColumn()
-  tags: Tag[];
+  tags: string[];
 
   @Field(() => [UserEntity])
   @ManyToOne(() => UserEntity, (user) => user.articles)

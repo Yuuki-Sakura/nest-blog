@@ -4,7 +4,6 @@ import { OriginMiddleware } from '@shared/middlewares/origin.middleware';
 import { CorsMiddleware } from '@shared/middlewares/cors.middleware';
 import { UserModule } from '@user/user.module';
 import { ArticleModule } from '@article/article.module';
-import { TagModule } from '@tag/tag.module';
 import { CategoryModule } from '@category/category.module';
 import { AppController } from '@app.controller';
 import { AuthModule } from '@auth/auth.module';
@@ -51,7 +50,6 @@ const { DATABASE } = require('../config.json');
     CacheModule,
     UserModule,
     ArticleModule,
-    TagModule,
     CategoryModule,
     AuthModule,
     RoleModule,

@@ -4,14 +4,12 @@ import { ArticleController } from './article.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Article } from '@article/article.entity';
 import { Comment } from '@comment/comment.entity';
-import { TagModule } from '@tag/tag.module';
 import { CategoryModule } from '@category/category.module';
 import { CommentModule } from '@comment/comment.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Article, Comment]),
-    TagModule,
     CategoryModule,
     CommentModule,
   ],

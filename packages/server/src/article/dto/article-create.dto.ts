@@ -12,7 +12,7 @@ export class ArticleCreateDto {
   @ApiProperty({ required: false })
   categoryId?: string;
   @ApiProperty({ required: false })
-  tagIds?: string[];
+  tags?: string[];
   @ApiProperty({ required: false })
   enableComment?: boolean;
 }

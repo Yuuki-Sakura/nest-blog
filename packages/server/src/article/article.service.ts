@@ -4,7 +4,6 @@ import { Article } from '@article/article.entity';
 import { Repository } from 'typeorm';
 import { UserEntity } from '@user/user.entity';
 import { ArticleCreateDto } from '@article/dto/article-create.dto';
-import { TagService } from '@tag/tag.service';
 import { CategoryService } from '@category/category.service';
 import { ArticleUpdateDto } from '@article/dto/article-update.dto';
 import { Comment } from '@comment/comment.entity';
@@ -18,7 +17,6 @@ export class ArticleService {
     @InjectRepository(Article)
     private readonly repository: Repository<Article>,
     private readonly commentService: CommentService,
-    private readonly tagService: TagService,
     private readonly categoryService: CategoryService,
   ) {}
 
@@ -37,7 +35,7 @@ export class ArticleService {
       body,
       summary,
       categoryId,
-      tagIds,
+      tags,
       published,
       enableComment,
     }: ArticleCreateDto,
@@ -48,10 +46,10 @@ export class ArticleService {
       title,
       body,
       summary,
+      tags,
       publishAt: published ? new Date() : undefined,
       enableComment,
     };
-    if (tagIds) article.tags = await this.tagService.findByIds(tagIds);
     if (categoryId)
       article.category = await this.categoryService.findById(categoryId);
     return this.repository.save(article);
@@ -64,7 +62,7 @@ export class ArticleService {
       body,
       summary,
       categoryId,
-      tagIds,
+      tags,
       published,
       enableComment,
     }: ArticleUpdateDto,
@@ -75,11 +73,11 @@ export class ArticleService {
         title,
         body,
         summary,
+        tags,
         published,
         enableComment,
       },
     };
-    article.tags = await this.tagService.findByIds(tagIds);
     article.category = await this.categoryService.findById(categoryId);
     return this.repository.update(id, article);
   }

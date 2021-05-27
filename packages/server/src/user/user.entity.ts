@@ -12,22 +12,22 @@ import { IMFriend } from '@im/entities/friend.entity';
 import { IMRequest } from '@im/entities/request.entity';
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 
-export enum EGender {
+export enum Gender {
   Secrecy, //保密
   Male, //男性
   Female, //女性
 }
 
-export enum EUserStatus {
+export enum UserStatus {
   Active,
   Banned,
 }
 
-registerEnumType(EGender, {
-  name: 'EGender',
+registerEnumType(Gender, {
+  name: 'Gender',
 });
-registerEnumType(EUserStatus, {
-  name: 'EUserStatus',
+registerEnumType(UserStatus, {
+  name: 'UserStatus',
 });
 
 @Entity('user')
@@ -54,25 +54,25 @@ export class UserEntity extends BaseEntity {
   @Column({ length: 500, nullable: true, default: null, comment: '头像' })
   avatar: string;
 
-  @Field(() => EGender)
+  @Field(() => Gender)
   @Column('simple-enum', {
-    enum: EGender,
-    default: EGender.Secrecy,
+    enum: Gender,
+    default: Gender.Secrecy,
     comment: '性别',
   })
-  gender: EGender;
+  gender: Gender;
 
   @Field({ nullable: true })
   @Column('timestamp', { comment: '生日', default: null })
   birthday: Date;
 
-  @Field(() => EUserStatus)
+  @Field(() => UserStatus)
   @Column('simple-enum', {
-    enum: EUserStatus,
-    default: EUserStatus.Active,
+    enum: UserStatus,
+    default: UserStatus.Active,
     comment: '用户状态',
   })
-  status: EUserStatus;
+  status: UserStatus;
 
   @Field({ nullable: true })
   @Timestamp({
