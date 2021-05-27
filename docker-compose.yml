@@ -43,6 +43,7 @@ services:
     networks:
       - private
   nest-blog:
+    image: yuukisakura/nest-blog:latest
     build:
       context: .
     ports:
