@@ -35,5 +35,6 @@
     "USERNAME": "admin",
     "EMAIL": "admin@zy.ci",
     "PASSWORD": "admin"
-  }
+  },
+  "ELASTICSEARCH_NODE": "http://localhost:9200"
 }
