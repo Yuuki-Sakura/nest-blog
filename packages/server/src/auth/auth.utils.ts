@@ -12,6 +12,7 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { PermissionGuard } from '@auth/permission.guard';
 import { ContentGuard } from '@auth/content.guard';
+import { GqlAuthGuard } from '@auth/gqlAuth.guard';
 
 export function hasPermission(resource: string, user: UserEntity): boolean;
 export function hasPermission(resource: string, roles: Role[]): boolean;
@@ -81,6 +82,15 @@ export const Auth = (resource?: string, name?: string) => {
   } else return applyDecorators(ApiBearerAuth(), UseGuards(AuthGuard('jwt')));
 };
 
+export const GqlAuth = (resource?: string, name?: string) => {
+  if (resource) {
+    return applyDecorators(
+      UseGuards(GqlAuthGuard, PermissionGuard),
+      Permission('gql.' + resource, name),
+    );
+  } else return applyDecorators(UseGuards(GqlAuthGuard, PermissionGuard));
+};
+
 export const permissions: {
   name: string;
   resource: string;
@@ -97,15 +107,13 @@ export const Permission = (resource: string, name?: string) => {
   );
 };
 
-export { Permission as Perm };
-
 export const GetPermission = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     return Reflect.getMetadata('resource', ctx.getHandler());
   },
 );
 
-export { GetPermission as GetPerm };
+export { GetPermission as Perm };
 
 export const User = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {

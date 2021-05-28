@@ -14,7 +14,7 @@ import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity as UserEntity } from '@user/user.entity';
 import { UserRegisterDto } from '@user/dto/user-register.dto';
 import { AuthService } from '@auth/auth.service';
-import { Auth, GetPerm, Permission, User } from '@auth/auth.utils';
+import { Auth, Perm, Permission, User } from '@auth/auth.utils';
 import { UserUpdateDto } from '@user/dto/user-update.dto';
 import { UserLoginResultDto } from '@user/dto/user-login-result.dto';
 import { CommentService } from '@comment/comment.service';
@@ -71,7 +71,7 @@ export class UserController {
   @Post('test')
   @Auth()
   @Permission('account.test', '测试')
-  async test(@User() user: UserEntity, @GetPerm() permission: string) {
+  async test(@User() user: UserEntity, @Perm() permission: string) {
     console.log(permission);
     return 'success';
   }
