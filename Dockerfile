@@ -1,9 +1,12 @@
 FROM node:lts
 MAINTAINER Yuuki-Sakura <admin@zy.ci>
 
-WORKDIR .
+ADD . /app
 
-RUN npm install -g pnpm
+WORKDIR /app
+
+RUN curl -f https://get.pnpm.io/v6.js | node - add --global pnpm@6
+RUN pnpm config set store-dir ~/.pnpm-store
 RUN pnpm install
 
 ARG NODE_ENV=production

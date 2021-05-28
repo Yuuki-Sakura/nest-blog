@@ -55,6 +55,7 @@ services:
       - es
     networks:
       - private
+      - public
   nginx:
     image: nginx:stable-alpine
     restart: always
