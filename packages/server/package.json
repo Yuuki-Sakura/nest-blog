@@ -14,7 +14,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "dev": "cross-env NODE_ENV=development nest start --watch",
     "debug": "cross-env NODE_ENV=development nest start --debug --watch",
-    "start": "cross-env NODE_ENV=production node dist/main",
+    "start": "cross-env NODE_ENV=production nest start",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "cross-env NODE_ENV=test jest",
     "test:watch": "cross-env NODE_ENV=test jest --watch",

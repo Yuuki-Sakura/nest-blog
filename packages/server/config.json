@@ -17,7 +17,7 @@
     "SWAGGER_PREFIX": "/api/doc"
   },
   "DATABASE": {
-    "HOST": "localhost",
+    "HOST": "mysql",
     "PORT": 3306,
     "USERNAME": "root",
     "PASSWORD": "lys.0828",
@@ -28,7 +28,7 @@
     "EXPIRES": "3600s"
   },
   "REDIS": {
-    "HOST": "localhost",
+    "HOST": "redis",
     "PORT": 6379
   },
   "ADMIN": {
@@ -36,5 +36,5 @@
     "EMAIL": "admin@zy.ci",
     "PASSWORD": "admin"
   },
-  "ELASTICSEARCH_NODE": "http://localhost:9200"
+  "ELASTICSEARCH_NODE": "http://elasticsearch:9200"
 }
