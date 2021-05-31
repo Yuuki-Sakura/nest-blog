@@ -11,6 +11,7 @@ import { UserUpdateDto } from '@user/dto/user-update.dto';
 import { RoleService } from '@role/role.service';
 import { UserEntity } from '@user/user.entity';
 import { Cache } from 'cache-manager';
+import { SearchService } from '@search/seacrh.service';
 
 @Injectable()
 export class UserService {
@@ -18,6 +19,7 @@ export class UserService {
     private readonly userRepository: UserRepository,
     private readonly roleService: RoleService,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    private readonly searchService: SearchService,
   ) {}
 
   async findAll() {
@@ -59,38 +61,11 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
-  // buildUserDto(user: UserEntity | UserEntity[]) {
-  //   function f(user:UserEntity) {
-  //     return {
-  //       id: user.id,
-  //       username: user.username,
-  //       email: user.email,
-  //       phone: user.phone,
-  //       avatar: user.avatar,
-  //       status: user.status,
-  //       createDate: user.createDate,
-  //       updateDate: user.updateDate,
-  //       loginDate: user.loginDate,
-  //     } as UserDto;
-  //   }
-  //   if (user instanceof Array) {
-  //     const users: UserDto[] = [];
-  //     user.forEach((user) => {
-  //       users.push({
-  //         id: user.id,
-  //         username: user.username,
-  //         email: user.email,
-  //         phone: user.phone,
-  //         avatar: user.avatar,
-  //         status: user.status,
-  //         createDate: user.createDate,
-  //         updateDate: user.updateDate,
-  //         loginDate: user.loginDate,
-  //       } as UserDto);
-  //     });
-  //     return users
-  //   } else {
-  //
-  //   }
-  // }
+  logout(user: UserEntity, token: string) {
+    this.searchService.client.index({
+      index: 'expired-token',
+      id: token,
+      body: { token },
+    });
+  }
 }

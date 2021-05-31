@@ -9,7 +9,6 @@ import { Reflector } from '@nestjs/core';
 import { Cache } from 'cache-manager';
 import { Role } from '@role/role.entity';
 import { hasPermission } from '@auth/auth.utils';
-import { GqlExecutionContext } from '@nestjs/graphql';
 import { RoleService } from '@role/role.service';
 
 @Injectable()
@@ -22,13 +21,7 @@ export class PermissionGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext) {
-    const gqlCtx = GqlExecutionContext.create(context);
-    let request;
-    if (gqlCtx.getType() == 'graphql') {
-      request = gqlCtx['args'][2]['req'];
-    } else {
-      request = context.switchToHttp().getRequest();
-    }
+    const request = context.switchToHttp().getRequest();
     const permission = this.reflector.get<string>(
       'resource',
       context.getHandler(),

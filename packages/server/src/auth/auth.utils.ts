@@ -9,10 +9,31 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
+import { AuthGuard } from '@auth/auth.guard';
 import { PermissionGuard } from '@auth/permission.guard';
 import { ContentGuard } from '@auth/content.guard';
 import { GqlAuthGuard } from '@auth/gqlAuth.guard';
+import * as crypto from 'crypto';
+import * as argon2 from 'argon2';
+
+export function encryptPassword(password: string) {
+  const hash = crypto.createHash('sha256').update(password).digest('hex');
+  return argon2.hash(
+    hash.substring(0, hash.length / 2) +
+      password +
+      hash.substring(hash.length / 2, hash.length),
+  );
+}
+
+export function verifyPassword(hashPwd: string, password: string) {
+  const hash = crypto.createHash('sha256').update(password).digest('hex');
+  return argon2.verify(
+    hashPwd,
+    hash.substring(0, hash.length / 2) +
+      password +
+      hash.substring(hash.length / 2, hash.length),
+  );
+}
 
 export function hasPermission(resource: string, user: UserEntity): boolean;
 export function hasPermission(resource: string, roles: Role[]): boolean;
@@ -67,7 +88,7 @@ export function ContentProtect(
   return applyDecorators(
     ApiBearerAuth(),
     SetMetadata('keys', keys),
-    UseGuards(AuthGuard('jwt'), ContentGuard),
+    UseGuards(AuthGuard, ContentGuard),
     perm,
   );
 }
@@ -76,10 +97,10 @@ export const Auth = (resource?: string, name?: string) => {
   if (resource) {
     return applyDecorators(
       ApiBearerAuth(),
-      UseGuards(AuthGuard('jwt'), PermissionGuard),
+      UseGuards(AuthGuard, PermissionGuard),
       Permission(resource, name),
     );
-  } else return applyDecorators(ApiBearerAuth(), UseGuards(AuthGuard('jwt')));
+  } else return applyDecorators(ApiBearerAuth(), UseGuards(AuthGuard));
 };
 
 export const GqlAuth = (resource?: string, name?: string) => {
@@ -120,5 +141,18 @@ export const User = createParamDecorator(
     const request = ctx.switchToHttp().getRequest();
     if (!request.user) throw new UnauthorizedException('请登录');
     return request.user;
+  },
+);
+
+export const Token = createParamDecorator(
+  (data: unknown, ctx: ExecutionContext) => {
+    const token = ctx
+      .switchToHttp()
+      .getRequest()
+      .headers?.authorization?.split(' ')[1];
+    if (!token) {
+      throw new UnauthorizedException('请登录');
+    }
+    return token;
   },
 );

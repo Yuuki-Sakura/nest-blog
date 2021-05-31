@@ -25,7 +25,7 @@ export class Article extends BaseEntity {
   @ManyToOne(() => Category, (category) => category.articles)
   category: Category;
 
-  @Field()
+  @Field(() => [String])
   @Column('simple-array')
   @JoinColumn()
   tags: string[];

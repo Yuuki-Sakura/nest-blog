@@ -14,7 +14,7 @@ import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity as UserEntity } from '@user/user.entity';
 import { UserRegisterDto } from '@user/dto/user-register.dto';
 import { AuthService } from '@auth/auth.service';
-import { Auth, Perm, Permission, User } from '@auth/auth.utils';
+import { Auth, Perm, Permission, Token, User } from '@auth/auth.utils';
 import { UserUpdateDto } from '@user/dto/user-update.dto';
 import { UserLoginResultDto } from '@user/dto/user-login-result.dto';
 import { CommentService } from '@comment/comment.service';
@@ -31,6 +31,7 @@ export class UserController {
   ) {}
 
   @Get('all')
+  @Auth('user.findAll')
   findAll() {
     return this.userService.findAll();
   }
@@ -41,7 +42,7 @@ export class UserController {
     return user;
   }
 
-  @Get(':username')
+  @Get('get/:username')
   findOneByName(@Param('username') username: string) {
     return this.userService.findOneByUsernameOrEmail(username);
   }
@@ -100,5 +101,10 @@ export class UserController {
   @Get('comments')
   getCommentsByUser(@User() user: UserEntity) {
     return this.commentService.find({ user });
+  }
+  @Get('logout')
+  @Auth()
+  logout(@User() user: UserEntity, @Token() token: string) {
+    this.userService.logout(user, token);
   }
 }

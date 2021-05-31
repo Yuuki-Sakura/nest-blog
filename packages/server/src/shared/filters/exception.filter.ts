@@ -11,7 +11,6 @@ import {
   HttpStatus,
   Inject,
 } from '@nestjs/common';
-import { HTTP_UNAUTHORIZED_TEXT_DEFAULT } from '@shared/constants/text.constant';
 import { APP_FILTER } from '@nestjs/core';
 import { Response } from 'express';
 import { HttpLogService } from '@http-log/http-log.service';
@@ -40,15 +39,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
       code: status,
       status: EHttpStatus.Error,
       message: exception.message,
-      stack: null,
+      stack: undefined,
     };
-    // 对默认的 404 进行特殊处理
-    if (status === HttpStatus.NOT_FOUND) {
-      data.message = `资源不存在`;
-    }
-    if (status === HttpStatus.UNAUTHORIZED) {
-      data.message = HTTP_UNAUTHORIZED_TEXT_DEFAULT;
-    }
     if (status === HttpStatus.FORBIDDEN) {
       data.message = '没有权限';
     }

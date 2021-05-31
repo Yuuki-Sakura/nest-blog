@@ -3,6 +3,7 @@ import { EntityRepository, Repository } from 'typeorm';
 import { UserEntity } from '@user/user.entity';
 import { UserRegisterDto } from '@user/dto/user-register.dto';
 import { HttpBadRequestException } from '@shared/exception/bad-request.exception';
+import { encryptPassword } from '@auth/auth.utils';
 
 @Injectable()
 @EntityRepository(UserEntity)
@@ -19,9 +20,8 @@ export class UserRepository extends Repository<UserEntity> {
     if (await this.findOne({ username: user.username })) {
       throw new BadRequestException(`用户名：'${user.username}' 已被使用`);
     }
-    const result = await this.save(
-      Object.assign({}, new UserEntity(), user) as UserEntity,
-    );
+    const password = await encryptPassword(user.password);
+    const result = await this.save({ ...new UserEntity(), ...user, password });
     if (!result) {
       throw new HttpBadRequestException('注册失败');
     } else {

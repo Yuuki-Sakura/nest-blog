@@ -20,6 +20,7 @@ import { CommentModule } from '@comment/comment.module';
 import { ImModule } from '@im/im.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { DateScalar } from '@shared/scalars/date.scalar';
+import { SearchModule } from '@search/search.module';
 
 //配置文件
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -58,6 +59,7 @@ const { DATABASE } = require('../config.json');
     LoggerModule,
     CommentModule,
     ImModule,
+    SearchModule,
   ],
   providers: [ExceptionFilterProvider, LoggingInterceptorProvider, DateScalar],
   controllers: [AppController],

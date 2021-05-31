@@ -37,6 +37,7 @@
     "@nestjs/typeorm": "^7.1.5",
     "@nestjs/websockets": "^7.6.17",
     "apollo-server-express": "^2.24.1",
+    "argon2": "^0.27.2",
     "cache-manager": "^3.4.3",
     "cache-manager-ioredis": "^2.1.0",
     "class-transformer": "^0.4.0",

@@ -1,8 +1,9 @@
-import { CanActivate, ExecutionContext } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
+import { AuthGuard } from '@auth/auth.guard';
 
-export class GqlAuthGuard extends AuthGuard('jwt') implements CanActivate {
+@Injectable()
+export class GqlAuthGuard extends AuthGuard implements CanActivate {
   public canActivate(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
     const request = ctx['args'][2]['req'];

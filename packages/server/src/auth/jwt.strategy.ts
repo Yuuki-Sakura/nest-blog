@@ -1,15 +1,15 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { AuthService } from './auth.service';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from '@user/user.entity';
 import { HttpUnauthorizedException } from '@shared/exception/unauthorized.exception';
+import { UserService } from '@user/user.service';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { JWT } = require('../../config.json');
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor(private readonly authService: AuthService) {
+  constructor(private readonly userService: UserService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -19,8 +19,8 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
   async validate(payload: any): Promise<UserEntity> {
     const { username, password } = payload;
-    const user = await this.authService.validateUser(username, password);
-    if (!user) {
+    const user = await this.userService.findOneByUsernameOrEmail(username);
+    if (user.password != password) {
       throw new HttpUnauthorizedException();
     }
     return user;

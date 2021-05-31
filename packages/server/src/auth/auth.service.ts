@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from '@user/user.service';
 import { UserEntity } from '@user/user.entity';
 import { Cache } from 'cache-manager';
+import { verifyPassword } from '@auth/auth.utils';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +20,7 @@ export class AuthService {
 
   async validateUser(username: string, password: string): Promise<UserEntity> {
     const user = await this.userService.findOneByUsernameOrEmail(username);
-    if (user.password != password)
+    if (!(await verifyPassword(user.password, password)))
       throw new BadRequestException('用户名或密码错误');
     return user;
   }
