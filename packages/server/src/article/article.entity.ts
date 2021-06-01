@@ -3,8 +3,18 @@ import { UserEntity } from '@user/user.entity';
 import { Category } from '@category/category.entity';
 import { BaseEntity } from '@shared/entity/base.entity';
 import { Comment } from '@comment/comment.entity';
-import { Timestamp } from '@shared/decorator/timestamp.decorator';
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Policy } from '@shared/classes/policy';
+
+export enum PublishStatus {
+  Draft = 0, // 草稿
+  Published = 1, // 已发布
+  Recycle = -1, // 回收站
+}
+
+registerEnumType(PublishStatus, {
+  name: 'PublishStatus',
+});
 
 @Entity('article')
 @ObjectType()
@@ -39,11 +49,15 @@ export class Article extends BaseEntity {
   @JoinColumn()
   comments: Comment[];
 
-  @Field()
-  @Timestamp({ comment: '发布时间', default: null, name: 'publish_at' })
-  publishAt: Date;
+  @Field(() => PublishStatus)
+  @Column('simple-enum', { enum: PublishStatus, comment: '发布状态' })
+  status: PublishStatus;
 
-  @Field()
-  @Column({ default: true, comment: '开启评论' })
-  enableComment: boolean;
+  @Field(() => Policy)
+  @Column('simple-json', { comment: '文章查看策略' })
+  policy: Policy;
+
+  @Field(() => Policy)
+  @Column('simple-json', { comment: '文章评论策略' })
+  commentPolicy: Policy;
 }

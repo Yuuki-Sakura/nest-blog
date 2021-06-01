@@ -1,9 +1,5 @@
 import { isDevMode } from '@app.environment';
 import {
-  EHttpStatus,
-  THttpErrorResponse,
-} from '@shared/interfaces/http.interface';
-import {
   ArgumentsHost,
   Catch,
   ExceptionFilter,
@@ -35,9 +31,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
       ? exception.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR
       : HttpStatus.INTERNAL_SERVER_ERROR;
     const stack = exception.stack;
-    const data: THttpErrorResponse = {
+    const data = {
       code: status,
-      status: EHttpStatus.Error,
       message: exception.message,
       stack: undefined,
     };

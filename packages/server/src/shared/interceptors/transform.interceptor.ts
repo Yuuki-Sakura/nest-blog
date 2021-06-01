@@ -14,28 +14,28 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import {
-  EHttpStatus,
-  THttpSuccessResponse,
-} from '@shared/interfaces/http.interface';
 import * as META from '@shared/constants/meta.constant';
 import * as TEXT from '@shared/constants/text.constant';
 import { GqlExecutionContext } from '@nestjs/graphql';
+
+type TResponse<T> = {
+  code: HttpStatus;
+  message: string;
+  data?: T;
+};
 
 /**
  * @class TransformInterceptor
  * @classdesc 当控制器所需的 Promise service 成功响应时，将在此被转换为标准的数据结构 THttpSuccessResponse
  */
 @Injectable()
-export class TransformInterceptor<T>
-  implements NestInterceptor<T, THttpSuccessResponse<T> | T>
-{
+export class TransformInterceptor<T> implements NestInterceptor<T> {
   constructor(private readonly reflector: Reflector) {}
 
   intercept(
     context: ExecutionContext,
     next: CallHandler<T>,
-  ): Observable<THttpSuccessResponse<T> | T> {
+  ): Observable<TResponse<T> | T> {
     const gqlContext = GqlExecutionContext.create(context);
     if (gqlContext.getType() == 'graphql') return next.handle();
     const target = context.getHandler();
@@ -51,7 +51,6 @@ export class TransformInterceptor<T>
         const isString = typeof data === 'string';
         return {
           code: statusCode || context.switchToHttp().getResponse().statusCode,
-          status: EHttpStatus.Success,
           message: isString ? data : message,
           data: !isString ? data : undefined,
         };

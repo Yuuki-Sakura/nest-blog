@@ -6,10 +6,6 @@
 
 import { Request, Response } from 'express';
 import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
-import {
-  EHttpStatus,
-  THttpErrorResponse,
-} from '@shared/interfaces/http.interface';
 import { isProdMode } from '@app.environment';
 import * as TEXT from '@shared/constants/text.constant';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -32,9 +28,8 @@ export class OriginMiddleware implements NestMiddleware {
       if (!isVerifiedOrigin && !isVerifiedReferer) {
         return response.status(HttpStatus.UNAUTHORIZED).jsonp({
           code: HttpStatus.UNAUTHORIZED,
-          status: EHttpStatus.Error,
           message: TEXT.HTTP_ANONYMOUS_TEXT,
-        } as THttpErrorResponse);
+        });
       }
     }
 

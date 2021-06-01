@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { PublishStatus } from '@article/article.entity';
 
 export class ArticleCreateDto {
   @ApiProperty()
@@ -8,11 +9,9 @@ export class ArticleCreateDto {
   @ApiProperty()
   body: string;
   @ApiProperty({ required: false })
-  published?: boolean;
-  @ApiProperty({ required: false })
   categoryId?: string;
   @ApiProperty({ required: false })
   tags?: string[];
-  @ApiProperty({ required: false })
-  enableComment?: boolean;
+  @ApiProperty({ required: false, enum: PublishStatus })
+  status?: PublishStatus;
 }

@@ -136,13 +136,12 @@ export const GetPermission = createParamDecorator(
 
 export { GetPermission as Perm };
 
-export const User = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext) => {
+export const User = (required = true) =>
+  createParamDecorator((data: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
-    if (!request.user) throw new UnauthorizedException('请登录');
+    if (!request.user && required) throw new UnauthorizedException('请登录');
     return request.user;
-  },
-);
+  })();
 
 export const Token = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {

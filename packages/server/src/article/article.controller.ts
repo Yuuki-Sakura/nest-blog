@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ArticleService } from '@article/article.service';
 import { UserEntity } from '@user/user.entity';
@@ -14,15 +15,31 @@ import { ArticleUpdateDto } from '@article/dto/article-update.dto';
 import { Auth, ContentProtect, User } from '@auth/auth.utils';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { CommentCreateDto } from '@comment/dto/comment-create.dto';
+import { PublishStatus } from '@article/article.entity';
 
 @ApiTags('文章')
 @Controller('article')
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
-  @Get(':keyword')
-  search(@Param('keyword') keyword: string) {
-    return this.articleService.search(keyword);
+  @Get(':id')
+  getArticle(
+    @Param('id') id: string,
+    @Query('password') password: string,
+    @Query('answer') answer: string,
+    @User(false) user?: UserEntity,
+  ) {
+    return this.articleService.findById(id, { password, answer, user });
+  }
+  @Get(':id/policy')
+  getArticlePolicy(@Param('id') id: string, @User(false) user?: UserEntity) {
+    return this.articleService.getArticlePolicy(id, user);
+  }
+
+  @Get('all')
+  @Auth('article.findAll', '获取所有文章')
+  getArticles() {
+    return this.articleService.findAll();
   }
 
   @Post()
@@ -38,10 +55,10 @@ export class ArticleController {
     return this.articleService.update(id, article);
   }
 
-  @Put(':id')
+  @Put(':id/publish')
   @ContentProtect('articles', 'article.publish', '发布文章')
   publish(@Param('id') id: string) {
-    return this.articleService.update(id, { published: true });
+    return this.articleService.update(id, { status: PublishStatus.Published });
   }
 
   @Delete(':id')
@@ -61,6 +78,6 @@ export class ArticleController {
 
   @Get(':articleId/comment')
   async getComment(@Param('articleId') id: string) {
-    return (await this.articleService.findById(id)).comments;
+    return (await this.articleService.findById(id, {})).comments;
   }
 }
