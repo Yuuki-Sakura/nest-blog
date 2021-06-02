@@ -12,8 +12,6 @@ import {
   RequestMethod,
 } from '@nestjs/common';
 import { isDevMode } from '@app.environment';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { CROSS_DOMAIN, PROJECT } = require('../../../config.json');
 
 /**
  * @class CorsMiddleware
@@ -26,7 +24,7 @@ export class CorsMiddleware implements NestMiddleware {
     const origins = request.headers.origin;
     const origin = (Array.isArray(origins) ? origins[0] : origins) || '';
 
-    const allowOrigins = [...CROSS_DOMAIN.AllowOrigins];
+    const allowOrigins = [...JSON.parse(process.env.ALLOW_ORIGINS)];
     const allowMethods = [
       RequestMethod.GET,
       RequestMethod.HEAD,
@@ -62,7 +60,6 @@ export class CorsMiddleware implements NestMiddleware {
     );
     response.header('Access-Control-Max-Age', '1728000');
     response.header('Content-Type', 'application/json; charset=utf-8');
-    response.header('X-Powered-By', `${PROJECT.name} ${PROJECT.version}`);
 
     // OPTIONS Request
     if (request.method === getMethod(RequestMethod.OPTIONS)) {

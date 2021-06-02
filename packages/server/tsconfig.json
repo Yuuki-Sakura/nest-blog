@@ -40,7 +40,6 @@
   "exclude": [
     "node_modules",
     "dist",
-    "config.json"
   ],
   "typeRoots": [
     "node_modules/@types"

@@ -5,15 +5,13 @@ import { PassportModule } from '@nestjs/passport';
 import { UserModule } from '@user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { RoleModule } from '@role/role.module';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { JWT } = require('../../config.json');
 
 @Module({
   imports: [
     PassportModule,
     JwtModule.register({
-      secret: JWT.SECRET,
-      signOptions: { expiresIn: JWT.EXPIRES },
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: +process.env.JWT_EXPIRES },
     }),
     forwardRef(() => UserModule),
     RoleModule,

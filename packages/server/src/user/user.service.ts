@@ -1,7 +1,5 @@
 import {
   BadRequestException,
-  CACHE_MANAGER,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -10,16 +8,14 @@ import { UserRegisterDto } from '@user/dto/user-register.dto';
 import { UserUpdateDto } from '@user/dto/user-update.dto';
 import { RoleService } from '@role/role.service';
 import { UserEntity } from '@user/user.entity';
-import { Cache } from 'cache-manager';
-import { SearchService } from '@search/seacrh.service';
-
+import { RedisService } from '@shared/redis/redis.service';
+import { createHash } from 'crypto';
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly roleService: RoleService,
-    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
-    private readonly searchService: SearchService,
+    private readonly redisService: RedisService,
   ) {}
 
   async findAll() {
@@ -55,17 +51,20 @@ export class UserService {
       if (user.roleIds) {
         const roles = await this.roleService.findByIds(user.roleIds);
         user1.roles.push(...roles);
-        await this.cacheManager.set(id, user1.roles);
+        await this.redisService.set(id + '-roles', user1.roles);
       }
     }
     return await this.userRepository.save(user);
   }
 
   logout(user: UserEntity, token: string) {
-    this.searchService.client.index({
-      index: 'expired-token',
-      id: token,
-      body: { token },
-    });
+    return this.redisService
+      .getClient()
+      .set(
+        'expired-token-' + createHash('sha1').update(token).digest('hex'),
+        token,
+        'EX',
+        +process.env.JWT_EXPIRES,
+      );
   }
 }

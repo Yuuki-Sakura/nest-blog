@@ -9,7 +9,6 @@ import { AppController } from '@app.controller';
 import { AuthModule } from '@auth/auth.module';
 import { RoleModule } from '@role/role.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CacheModule } from '@shared/cache/cache.module';
 import { PermissionModule } from '@permission/permission.module';
 import { isProdMode } from '@app.environment';
 import { HttpLogModule } from '@http-log/http-log.module';
@@ -21,21 +20,20 @@ import { ImModule } from '@im/im.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { DateScalar } from '@shared/scalars/date.scalar';
 import { SearchModule } from '@search/search.module';
+import { RedisModule } from '@shared/redis/redis.module';
 
 //配置文件
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { DATABASE } = require('../config.json');
 
 // 业务模块
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: DATABASE.HOST,
-      port: DATABASE.PORT,
-      username: DATABASE.USERNAME,
-      password: DATABASE.PASSWORD,
-      database: DATABASE.DATABASE,
+      host: process.env.DATABASE_HOST,
+      port: +process.env.DATABASE_PORT,
+      username: process.env.DATABASE_USERNAME,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_DATABASE,
       synchronize: true,
       autoLoadEntities: true,
       logging: !isProdMode,
@@ -48,7 +46,10 @@ const { DATABASE } = require('../config.json');
       useGlobalPrefix: true,
       path: 'gql',
     }),
-    CacheModule,
+    RedisModule.register({
+      host: process.env.REDIS_HOST,
+      port: +process.env.REDIS_PORT,
+    }),
     UserModule,
     ArticleModule,
     CategoryModule,

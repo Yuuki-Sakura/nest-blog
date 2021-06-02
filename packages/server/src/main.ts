@@ -13,9 +13,7 @@ import { RoleService } from '@role/role.service';
 import { UserService } from '@user/user.service';
 import { permissions } from '@auth/auth.utils';
 import { TMethod } from '@http-log/http-log.entity';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { ADMIN, SERVER } = require('../config.json');
-
+import { config } from 'dotenv';
 let logger;
 let app: NestApplication;
 
@@ -73,9 +71,9 @@ async function init(app: NestApplication) {
       return await userService.findOneByUsernameOrEmail('admin');
     } catch (e) {
       return await userService.register({
-        username: ADMIN.USERNAME,
-        email: ADMIN.EMAIL,
-        password: ADMIN.PASSWORD,
+        username: process.env.ADMIN_USERNAME,
+        email: process.env.ADMIN_EMAIL,
+        password: process.env.ADMIN_PASSWORD,
       });
     }
   })();
@@ -85,6 +83,7 @@ async function init(app: NestApplication) {
 }
 
 async function bootstrap() {
+  config();
   app = await NestFactory.create(AppModule);
   app.use(
     helmet({
@@ -99,38 +98,40 @@ async function bootstrap() {
     new ClassSerializerInterceptor(new Reflector()),
   );
   app.useGlobalPipes(new ValidationPipe());
-  app.setGlobalPrefix(SERVER.PREFIX);
+  app.setGlobalPrefix(process.env.SERVER_PREFIX);
 
-  const config = new DocumentBuilder()
-    .addBearerAuth()
-    .setTitle('Nest Blog')
-    .setDescription('A Blog System')
-    .setVersion('1.0')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup(SERVER.SWAGGER_PREFIX, app, document);
+  const document = SwaggerModule.createDocument(
+    app,
+    new DocumentBuilder()
+      .addBearerAuth()
+      .setTitle('Nest Blog')
+      .setDescription('A Blog System')
+      .setVersion('1.0')
+      .build(),
+  );
+  SwaggerModule.setup(process.env.SWAGGER_PREFIX, app, document);
 
   logger = app.get<AppLogger>(AppLogger);
   logger.setContext('Nest Blog');
   app.useLogger(logger);
-  await app.listen(SERVER.PORT);
+  await app.listen(process.env.SERVER_PORT);
 }
 
 bootstrap().then(async () => {
   await init(app);
   logger.log(
     `Nest Blog Run！at http://localhost:${
-      SERVER.PORT + SERVER.PREFIX
+      process.env.SERVER_PORT + process.env.SERVER_PREFIX
     } env:${environment}`,
   );
   logger.log(
     `Swagger is running at http://localhost:${
-      SERVER.PORT + SERVER.SWAGGER_PREFIX
+      process.env.SERVER_PORT + process.env.SWAGGER_PREFIX
     }`,
   );
   logger.log(
     `GraphQL is running at http://localhost:${
-      SERVER.PORT + SERVER.PREFIX + '/gql'
+      process.env.SERVER_PORT + process.env.SERVER_PREFIX + '/gql'
     }`,
   );
 });

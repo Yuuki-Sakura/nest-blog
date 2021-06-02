@@ -6,23 +6,25 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { SearchService } from '@search/seacrh.service';
+import { RedisService } from '@shared/redis/redis.service';
+import { createHash } from 'crypto';
 
 @Injectable()
 export class AuthGuard extends NestAuthGuard('jwt') implements CanActivate {
-  @Inject(SearchService)
-  private readonly searchService: SearchService;
+  @Inject(RedisService)
+  private readonly redisService: RedisService;
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const token = context
       .switchToHttp()
       .getRequest()
       .headers?.authorization?.split(' ')[1];
-    const { body } = await this.searchService.client.exists({
-      index: 'expired-token',
-      id: token,
-    });
-    if (body) throw new UnauthorizedException('token has expired');
+    if (
+      await this.redisService.get(
+        'expired-token-' + createHash('sha1').update(token).digest('hex'),
+      )
+    )
+      throw new UnauthorizedException('token has expired');
     return super.canActivate(context) as boolean;
   }
 }

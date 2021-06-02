@@ -1,10 +1,11 @@
 import { Logger, Module } from '@nestjs/common';
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { PROJECT } = require('../config.json');
+const { name } = require('../package.json');
 
 export class AppLogger extends Logger {
   constructor() {
-    super(PROJECT.name);
+    super(name);
   }
 }
 

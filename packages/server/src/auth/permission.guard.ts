@@ -1,15 +1,14 @@
 import {
-  CACHE_MANAGER,
   CanActivate,
   ExecutionContext,
   Inject,
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Cache } from 'cache-manager';
 import { Role } from '@role/role.entity';
 import { hasPermission } from '@auth/auth.utils';
 import { RoleService } from '@role/role.service';
+import { RedisService } from '@shared/redis/redis.service';
 
 @Injectable()
 export class PermissionGuard implements CanActivate {
@@ -17,7 +16,7 @@ export class PermissionGuard implements CanActivate {
     private readonly reflector: Reflector,
     @Inject(RoleService)
     private readonly roleService: RoleService,
-    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    private readonly redisService: RedisService,
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -30,7 +29,7 @@ export class PermissionGuard implements CanActivate {
     if (permission) {
       // 获取用户角色
       const roles =
-        (await this.cacheManager.get<Role[]>(request.user.id)) ||
+        (await this.redisService.get<Role[]>(request.user.id + '-roles')) ||
         (await this.roleService.findByUser(request.user.id));
       return hasPermission(permission, roles);
     }

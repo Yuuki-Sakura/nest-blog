@@ -8,8 +8,6 @@ import { Request, Response } from 'express';
 import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
 import { isProdMode } from '@app.environment';
 import * as TEXT from '@shared/constants/text.constant';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { CROSS_DOMAIN } = require('../../../config.json');
 
 /**
  * @class OriginMiddleware
@@ -22,7 +20,7 @@ export class OriginMiddleware implements NestMiddleware {
     if (isProdMode) {
       const { origin, referer } = request.headers;
       const checkHeader = (field) =>
-        !field || field.includes(CROSS_DOMAIN.AllowReferer);
+        !field || field.includes(process.env.ALLOW_REFERER);
       const isVerifiedOrigin = checkHeader(origin);
       const isVerifiedReferer = checkHeader(referer);
       if (!isVerifiedOrigin && !isVerifiedReferer) {

@@ -1,21 +1,18 @@
-import {
-  BadRequestException,
-  CACHE_MANAGER,
-  Inject,
-  Injectable,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '@user/user.service';
 import { UserEntity } from '@user/user.entity';
-import { Cache } from 'cache-manager';
 import { verifyPassword } from '@auth/auth.utils';
+import { RoleService } from '@role/role.service';
+import { RedisService } from '@shared/redis/redis.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     private readonly userService: UserService,
+    private readonly roleService: RoleService,
+    private readonly redisService: RedisService,
   ) {}
 
   async validateUser(username: string, password: string): Promise<UserEntity> {
@@ -27,7 +24,11 @@ export class AuthService {
 
   async certificate(user: UserEntity) {
     const { username, password, roles, id } = user;
-    if (roles) await this.cacheManager.set(id, roles);
+    if (roles)
+      await this.redisService.set(
+        id + '-roles',
+        await this.roleService.findByUser(user.id),
+      );
     user.loginAt = new Date();
     await this.userService.update(user.id, user);
     return this.jwtService.sign({ username, password });

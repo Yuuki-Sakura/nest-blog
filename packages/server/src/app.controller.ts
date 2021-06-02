@@ -6,12 +6,16 @@
 
 import { Controller, Get } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { PROJECT } = require('../config.json');
+const { name, version, author } = require('../package.json');
 
 @Controller()
 export class AppController {
   @Get()
   root(): any {
-    return PROJECT;
+    return {
+      name,
+      version,
+      author,
+    };
   }
 }

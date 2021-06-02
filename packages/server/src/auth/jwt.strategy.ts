@@ -4,8 +4,6 @@ import { Injectable } from '@nestjs/common';
 import { UserEntity } from '@user/user.entity';
 import { HttpUnauthorizedException } from '@shared/exception/unauthorized.exception';
 import { UserService } from '@user/user.service';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { JWT } = require('../../config.json');
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -13,7 +11,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: JWT.SECRET,
+      secretOrKey: process.env.JWT_SECRET,
     });
   }
 
